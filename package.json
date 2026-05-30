@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "pull": "shopify theme pull",
+    "push": "shopify theme push",
+    "dev": "shopify theme dev",
+    "push:draft": "shopify theme push --draft"
+  }
+}

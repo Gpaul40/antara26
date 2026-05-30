@@ -1,0 +1,20 @@
+# Shopify CLI internals (contains store credentials & metafields - never commit)
+.shopify/
+
+# Node / npm
+node_modules/
+npm-debug.log*
+.npm
+
+# Environment variables & secrets
+.env
+.env.*
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp

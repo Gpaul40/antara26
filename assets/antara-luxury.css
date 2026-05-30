@@ -1,0 +1,207 @@
+/* ============================================================
+   ANTARA INTERNATIONAL — Luxury Design System
+   Draft Theme: Copy of Antara 2026
+   
+   Architecture: Non-destructive overrides layered on top of
+   the Prestige theme base. All Shopify customizer settings
+   remain fully compatible.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   SECTION 1: GLOBAL DESIGN TOKENS
+   ------------------------------------------------------------ */
+:root {
+  /* Navigation typography */
+  --antara-nav-font-size: 10.5px;
+  --antara-nav-letter-spacing: 0.14em;
+  --antara-nav-font-weight: 400;
+  --antara-nav-text-transform: uppercase;
+
+  /* Hover & animation */
+  --antara-underline-height: 1px;
+  --antara-nav-hover-duration: 0.35s;
+  --antara-nav-hover-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --antara-transition-slow: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --antara-transition-medium: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --antara-transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Spacing */
+  --antara-section-gap: 120px;
+  --antara-section-gap-mobile: 72px;
+
+  /* Typography scale */
+  --antara-heading-tracking: 0.06em;
+  --antara-subheading-tracking: 0.18em;
+  --antara-body-tracking: 0.03em;
+
+  /* Announcement bar */
+  --antara-announcement-font-size: 10px;
+  --antara-announcement-letter-spacing: 0.16em;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 2: HEADER — LUXURY ELEVATION
+   ------------------------------------------------------------ */
+
+/* 2a. Increase header height for more visual presence */
+body {
+  --header-height: 72px;
+}
+
+/* 2b. Nav link typography — signature luxury uppercase treatment */
+.menu-list__link,
+button.menu-list__link {
+  font-size: var(--antara-nav-font-size) !important;
+  letter-spacing: var(--antara-nav-letter-spacing) !important;
+  font-weight: var(--antara-nav-font-weight) !important;
+  text-transform: var(--antara-nav-text-transform) !important;
+}
+
+/* 2c. Elegant slide-in underline hover — replaces default opacity-only behaviour.
+   Uses background-image gradient so it respects the extended padding click area
+   already applied by the theme without z-index conflicts. */
+.menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link,
+.menu-list__list-item:where(:not([slot='overflow'])) > button.menu-list__link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% var(--antara-underline-height);
+  background-repeat: no-repeat;
+  background-position: left bottom 2px;
+  transition:
+    background-size var(--antara-nav-hover-duration) var(--antara-nav-hover-easing),
+    opacity var(--animation-speed, 0.2s) var(--animation-easing, ease);
+}
+
+.menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link:hover,
+.menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link:focus-visible,
+.menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link[aria-expanded='true'] {
+  background-size: 100% var(--antara-underline-height);
+}
+
+/* 2d. Refine icon sizing and spacing in header actions */
+.header-actions__action {
+  gap: 0;
+  letter-spacing: 0;
+}
+
+.header-actions__action svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 2e. Soften the dimming effect on non-hovered nav items — luxury brands
+   use a more subtle fade rather than a hard opacity shift */
+@media (hover: hover) {
+  .header__column:has(header-menu:hover) header-menu:not(:hover),
+  .header__column:has(.header-actions__action:hover) .header-actions__action:not(:hover),
+  .header__column:has(.dropdown-localization__button:hover) .dropdown-localization__button:not(:hover) {
+    opacity: 0.4 !important;
+    transition: opacity var(--antara-nav-hover-duration) var(--antara-nav-hover-easing) !important;
+  }
+}
+
+/* 2f. Mega menu / dropdown — refined panel appearance */
+.mega-menu__list,
+.menu-list__submenu {
+  border-top: 1px solid rgba(var(--color-border-rgb, 0 0 0) / 0.08) !important;
+}
+
+.mega-menu__link,
+.menu-list__submenu .menu-list__link {
+  font-size: var(--antara-nav-font-size) !important;
+  letter-spacing: var(--antara-nav-letter-spacing) !important;
+  font-weight: var(--antara-nav-font-weight) !important;
+  text-transform: var(--antara-nav-text-transform) !important;
+}
+
+/* 2g. Sticky header — add a very subtle shadow when activated */
+.header[data-sticky-state='active'] {
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 3: ANNOUNCEMENT BAR — REFINED TYPOGRAPHY
+   ------------------------------------------------------------ */
+.announcement-bar__message,
+.announcement-bar__message p,
+.announcement-bar__message a {
+  font-size: var(--antara-announcement-font-size) !important;
+  letter-spacing: var(--antara-announcement-letter-spacing) !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 4: GLOBAL TYPOGRAPHY REFINEMENTS
+   ------------------------------------------------------------ */
+
+/* Tighten heading tracking for editorial feel */
+h1, h2, h3, h4, h5, h6,
+.heading {
+  letter-spacing: var(--antara-heading-tracking);
+}
+
+/* Subtle body tracking for premium legibility */
+body,
+p,
+.body,
+.rte {
+  letter-spacing: var(--antara-body-tracking);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 5: SMOOTH PAGE TRANSITIONS
+   ------------------------------------------------------------ */
+
+/* Ensure page content fades in elegantly */
+@media (prefers-reduced-motion: no-preference) {
+  .content-for-layout {
+    animation: antara-fade-in 0.4s var(--antara-nav-hover-easing) both;
+  }
+
+  @keyframes antara-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 6: SCROLLBAR — REFINED
+   ------------------------------------------------------------ */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+/* Hide Shopify dynamic checkout (payment icons) inside product cards on non-product pages */
+.section-resource-list shopify-accelerated-checkout,
+.section-resource-list .shopify-payment-button,
+product-card shopify-accelerated-checkout,
+product-card .shopify-payment-button,
+.quick-add shopify-accelerated-checkout,
+.quick-add .shopify-payment-button {
+  display: none !important;
+}
