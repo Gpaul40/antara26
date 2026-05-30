@@ -264,7 +264,7 @@ shopify-cleanslate {
     left: 0;
     width: 34px;
     height: 34px;
-    border: 1.5px solid #3D4B5C;
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     pointer-events: none;
     z-index: 999997;
@@ -276,38 +276,42 @@ shopify-cleanslate {
       border-color 0.4s ease,
       opacity 0.3s ease;
     will-change: left, top;
-    mix-blend-mode: multiply;
   }
 
   #antara-cursor-dot {
     position: fixed;
     top: 0;
     left: 0;
-    width: 5px;
-    height: 5px;
-    background: #3D4B5C;
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
     border-radius: 50%;
     pointer-events: none;
     z-index: 999998;
     transform: translate(-50%, -50%);
     will-change: left, top;
-    transition: transform 0.1s ease, opacity 0.3s ease;
+    transition: transform 0.1s ease, opacity 0.3s ease, background-color 0.3s ease;
+  }
+
+  /* On light sections: switch to dark slate */
+  .color-scheme--light #antara-cursor,
+  section:not([class*="dark"]) #antara-cursor {
+    border-color: #3D4B5C;
   }
 
   /* Ring expands + cream fill on interactive elements */
   body.antara-cursor-hover #antara-cursor {
     width: 54px;
     height: 54px;
-    background-color: rgba(250, 243, 228, 0.35);
-    border-color: #3D4B5C;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.9);
   }
 
-  /* Dot shrinks on hover */
   body.antara-cursor-hover #antara-cursor-dot {
     transform: translate(-50%, -50%) scale(0.3);
   }
 
-  /* Cursor disappears when mouse leaves window */
+  /* Hide when mouse leaves window */
   body.antara-cursor-hidden #antara-cursor,
   body.antara-cursor-hidden #antara-cursor-dot {
     opacity: 0;
@@ -346,9 +350,29 @@ shopify-cleanslate {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#antara-page-overlay-wordmark {
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-size: clamp(28px, 5vw, 52px);
+  letter-spacing: 0.28em;
+  color: #3D4B5C;
+  text-transform: uppercase;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease 0.1s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
 }
 
 #antara-page-overlay.antara-leaving {
   opacity: 1;
   pointer-events: all;
+}
+
+#antara-page-overlay.antara-leaving #antara-page-overlay-wordmark {
+  opacity: 1;
+  transform: translateY(0);
 }

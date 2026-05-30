@@ -295,6 +295,10 @@
         // ── 3. PAGE TRANSITIONS ───────────────────────────────────
         var overlay = document.createElement('div');
         overlay.id = 'antara-page-overlay';
+        var wordmark = document.createElement('span');
+        wordmark.id = 'antara-page-overlay-wordmark';
+        wordmark.textContent = 'ANTARA';
+        overlay.appendChild(wordmark);
         document.body.insertBefore(overlay, document.body.firstChild);
 
         // Fade in on arrival
