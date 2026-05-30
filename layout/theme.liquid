@@ -116,64 +116,30 @@
     {% endif %}
 
     <script>
-      // Hide third-party trust badge / payment icons injected via content_for_header
-      // These appear on collection pages overlaying product cards.
-      // CSS cannot target them reliably due to shopify-cleanslate isolation,
-      // so we use a MutationObserver to remove matching elements from the DOM.
+      // Fallback JS: force-hide any shopify-cleanslate element that renders
+      // payment/trust badge content outside of cart or product form contexts.
       (function hideInjectedPaymentBadges() {
-        var COLLECTION_TEMPLATES = ['collection', 'search', 'index'];
-        var template = document.body.dataset.template || '';
-        if (!COLLECTION_TEMPLATES.some(function(t) { return template.indexOf(t) === 0; })) return;
-
-        function removePaymentBadges() {
-          // Target shopify-cleanslate elements that sit directly inside body or
-          // as siblings of product card wrappers (not inside cart/checkout forms).
-          var cleanslates = document.querySelectorAll('shopify-cleanslate');
-          cleanslates.forEach(function(el) {
-            // Only hide if it contains payment-related text or icons
-            var text = el.innerText || el.textContent || '';
-            var hasPaymentText = /secure checkout|pay with|payment/i.test(text);
-            var hasPaymentIcon = el.querySelector('[class*="payment"], [class*="PaymentIcon"], img[src*="payment"], img[src*="visa"], img[src*="mastercard"]');
-            var isInsideCart = el.closest('form[action*="/cart"], [id*="cart"], .cart');
-            var isInsideProduct = el.closest('.product__info-wrapper, .product-single, [class*="product-page"]');
-            if ((hasPaymentText || hasPaymentIcon) && !isInsideCart && !isInsideProduct) {
+        function hideUnwantedCleanslates() {
+          document.querySelectorAll('shopify-cleanslate').forEach(function(el) {
+            var inCart = el.closest('.cart, .cart-drawer, [id*="cart"], form[action*="/cart/add"]');
+            var inProductForm = el.closest('.product__info-wrapper, .product-single__form, product-form');
+            if (!inCart && !inProductForm) {
               el.style.setProperty('display', 'none', 'important');
             }
           });
-
-          // Also search for any element with "Secure Checkout" text near product grid
-          var allElements = document.querySelectorAll('body > *, .section-resource-list *');
-          allElements.forEach(function(el) {
-            if (el.children.length > 0) return; // skip parent nodes
-            var text = el.textContent.trim();
-            if (/^secure checkout/i.test(text)) {
-              // Walk up to find the app container and hide it
-              var container = el.parentElement;
-              for (var i = 0; i < 5 && container && container !== document.body; i++) {
-                if (container.tagName.toLowerCase() === 'shopify-cleanslate' ||
-                    container.hasAttribute('data-shopify-app-init')) {
-                  container.style.setProperty('display', 'none', 'important');
-                  break;
-                }
-                container = container.parentElement;
-              }
-            }
-          });
         }
 
-        // Run on DOM ready
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', removePaymentBadges);
+          document.addEventListener('DOMContentLoaded', hideUnwantedCleanslates);
         } else {
-          removePaymentBadges();
+          hideUnwantedCleanslates();
         }
 
-        // Watch for dynamically injected elements
-        var observer = new MutationObserver(function(mutations) {
-          var shouldCheck = mutations.some(function(m) { return m.addedNodes.length > 0; });
-          if (shouldCheck) removePaymentBadges();
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
+        new MutationObserver(function(mutations) {
+          if (mutations.some(function(m) { return m.addedNodes.length > 0; })) {
+            hideUnwantedCleanslates();
+          }
+        }).observe(document.body, { childList: true, subtree: true });
       })();
     </script>
   </body>

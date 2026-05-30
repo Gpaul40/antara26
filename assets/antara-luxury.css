@@ -197,33 +197,23 @@ html {
 }
 
 /* ----------------------------------------------------------------
-   Hide payment/trust badge app injections on non-product pages
-   (collection, search, home product lists, etc.)
-   These are injected via content_for_header by third-party apps
-   and wrapped in shopify-cleanslate custom elements.
+   Hide ALL shopify-cleanslate injections globally.
+   shopify-cleanslate is used by third-party apps to inject UI
+   (trust badges, payment icons, etc.) via content_for_header.
+   Since accelerated_checkout_buttons is disabled on this store,
+   hiding globally is safe — only re-enable inside cart/checkout.
    ---------------------------------------------------------------- */
 
-/* Target the shopify-cleanslate container (used by ALL Shopify payment apps) */
-product-card shopify-cleanslate,
-product-card-link shopify-cleanslate,
-.product-grid__item shopify-cleanslate,
-.product-card shopify-cleanslate,
-.section-resource-list shopify-cleanslate,
-.quick-add shopify-cleanslate {
+shopify-cleanslate {
   display: none !important;
 }
 
-/* Target native Shopify accelerated checkout elements */
-product-card shopify-accelerated-checkout,
-product-card .shopify-payment-button,
-product-card .shopify-payment-button__button,
-product-card .accelerated-checkout-block,
-product-card-link shopify-accelerated-checkout,
-.product-grid__item shopify-accelerated-checkout,
-.product-grid__item .shopify-payment-button,
-.section-resource-list shopify-accelerated-checkout,
-.section-resource-list .shopify-payment-button,
-.quick-add shopify-accelerated-checkout,
-.quick-add .shopify-payment-button {
-  display: none !important;
+/* Re-enable inside cart and checkout contexts */
+.cart shopify-cleanslate,
+.cart-drawer shopify-cleanslate,
+[id*="cart"] shopify-cleanslate,
+form[action*="/cart/add"] shopify-cleanslate,
+.product__info-wrapper shopify-cleanslate,
+.product-single__form shopify-cleanslate {
+  display: block !important;
 }
