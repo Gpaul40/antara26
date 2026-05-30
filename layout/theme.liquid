@@ -116,9 +116,69 @@
     {% endif %}
 
     <script>
-      // Fallback JS: force-hide any shopify-cleanslate element that renders
-      // payment/trust badge content outside of cart or product form contexts.
+      // Badge hunter: hides injected payment/trust badges anywhere in the DOM.
+      // Also logs debug info to console so we can identify the element type.
       (function hideInjectedPaymentBadges() {
+        var BADGE_KEYWORDS = ['secure checkout', 'visa', 'mastercard', 'amex', 'american express', 'payment'];
+        var CART_SELECTOR = '.cart, .cart-drawer, [id*="cart"], form[action*="/cart/add"]';
+
+        function containsBadgeText(el) {
+          var text = (el.textContent || '').toLowerCase();
+          return BADGE_KEYWORDS.some(function(k) { return text.includes(k); });
+        }
+
+        function hideEl(el, reason) {
+          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty('visibility', 'hidden', 'important');
+          el.style.setProperty('opacity', '0', 'important');
+          el.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[BadgeHunter] Hidden element:', el.tagName, el.className, '| Reason:', reason);
+        }
+
+        function scanElement(el) {
+          // Check if element or its shadow root contains badge text
+          if (!el || el.nodeType !== 1) return;
+          var inCart = el.closest && el.closest(CART_SELECTOR);
+          if (inCart) return;
+
+          // Check for shopify-cleanslate
+          if (el.tagName && el.tagName.toLowerCase() === 'shopify-cleanslate') {
+            if (containsBadgeText(el)) hideEl(el, 'shopify-cleanslate with badge text');
+          }
+
+          // Check shadow root
+          if (el.shadowRoot) {
+            var shadowText = (el.shadowRoot.textContent || '').toLowerCase();
+            if (BADGE_KEYWORDS.some(function(k) { return shadowText.includes(k); })) {
+              hideEl(el, 'shadow root with badge text');
+            }
+          }
+
+          // Check for iframes
+          if (el.tagName && el.tagName.toLowerCase() === 'iframe') {
+            var src = (el.src || '').toLowerCase() + (el.getAttribute('title') || '').toLowerCase();
+            if (BADGE_KEYWORDS.some(function(k) { return src.includes(k); })) {
+              hideEl(el, 'iframe with badge src/title');
+            }
+            // Log all iframes for debugging
+            console.log('[BadgeHunter] Found iframe:', el.src, 'title:', el.getAttribute('title'), 'id:', el.id, 'class:', el.className);
+          }
+
+          // Check divs/spans with suspicious classes
+          var cls = (el.className || '').toLowerCase();
+          var id = (el.id || '').toLowerCase();
+          if ((cls.includes('badge') || cls.includes('trust') || cls.includes('secure') || cls.includes('checkout') || id.includes('badge') || id.includes('trust') || id.includes('secure')) && !inCart) {
+            if (containsBadgeText(el)) {
+              hideEl(el, 'class/id suggests badge: ' + el.className + ' ' + el.id);
+            }
+          }
+        }
+
+        function scanAll() {
+          // Scan all elements in DOM
+          document.querySelectorAll('*').forEach(scanElement);
+        }
+
         function hideUnwantedCleanslates() {
           document.querySelectorAll('shopify-cleanslate').forEach(function(el) {
             var inCart = el.closest('.cart, .cart-drawer, [id*="cart"], form[action*="/cart/add"]');
@@ -129,15 +189,20 @@
           });
         }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', hideUnwantedCleanslates);
-        } else {
+        function run() {
+          scanAll();
           hideUnwantedCleanslates();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', run);
+        } else {
+          run();
         }
 
         new MutationObserver(function(mutations) {
           if (mutations.some(function(m) { return m.addedNodes.length > 0; })) {
-            hideUnwantedCleanslates();
+            run();
           }
         }).observe(document.body, { childList: true, subtree: true });
       })();
