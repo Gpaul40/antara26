@@ -196,12 +196,44 @@ html {
   border-radius: 2px;
 }
 
-/* Hide Shopify dynamic checkout (payment icons) inside product cards on non-product pages */
+/* Hide payment icons / trust badge apps inside product cards on non-product pages */
 .section-resource-list shopify-accelerated-checkout,
 .section-resource-list .shopify-payment-button,
+.section-resource-list .shopify-cleanslate,
 product-card shopify-accelerated-checkout,
 product-card .shopify-payment-button,
+product-card .shopify-cleanslate,
 .quick-add shopify-accelerated-checkout,
-.quick-add .shopify-payment-button {
+.quick-add .shopify-payment-button,
+.quick-add .shopify-cleanslate,
+.product-grid__item shopify-accelerated-checkout,
+.product-grid__item .shopify-payment-button,
+.product-grid shopify-accelerated-checkout,
+.product-grid .shopify-payment-button {
+  display: none !important;
+}
+
+/* Hide any injected trust badge / secure checkout widgets in collection/search/list contexts */
+:is(
+  .section-resource-list,
+  product-card,
+  .product-grid__item,
+  .product-grid,
+  .quick-add
+) [class*="secure"],
+:is(
+  .section-resource-list,
+  product-card,
+  .product-grid__item,
+  .product-grid,
+  .quick-add
+) [class*="trust"],
+:is(
+  .section-resource-list,
+  product-card,
+  .product-grid__item,
+  .product-grid,
+  .quick-add
+) [class*="badge"] {
   display: none !important;
 }
