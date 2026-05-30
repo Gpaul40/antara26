@@ -340,7 +340,7 @@ shopify-cleanslate {
 }
 
 /* ------------------------------------------------------------
-   3. PAGE TRANSITIONS — Luxury cream fade overlay
+   3. PAGE TRANSITIONS — Cream fade + white burn flash
    ------------------------------------------------------------ */
 #antara-page-overlay {
   position: fixed;
@@ -349,10 +349,24 @@ shopify-cleanslate {
   z-index: 999996;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* White burn layer sits on top of the cream overlay */
+#antara-page-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+#antara-page-overlay.antara-burn::after {
+  opacity: 1;
 }
 
 #antara-page-overlay-wordmark {
@@ -365,6 +379,8 @@ shopify-cleanslate {
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.25s ease 0.1s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  position: relative;
+  z-index: 1; /* sit above the ::after burn layer */
 }
 
 #antara-page-overlay.antara-leaving {
