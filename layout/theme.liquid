@@ -119,7 +119,6 @@
       // Badge hunter: hides injected payment/trust badges anywhere in the DOM.
       (function hideInjectedPaymentBadges() {
         var CART_SELECTOR = '.cart, .cart-drawer, [id*="cart"]';
-        // Exact phrases that identify a secure-checkout / trust-badge popup
         var BADGE_PHRASES = ['secure checkout with', 'secure checkout', 'checkout securely'];
 
         function containsBadgeText(el) {
@@ -127,69 +126,56 @@
           return BADGE_PHRASES.some(function(k) { return text.includes(k); });
         }
 
-        function hideEl(el, reason) {
+        function hideEl(el) {
           el.style.setProperty('display', 'none', 'important');
           el.style.setProperty('visibility', 'hidden', 'important');
           el.style.setProperty('opacity', '0', 'important');
           el.style.setProperty('pointer-events', 'none', 'important');
         }
 
+        function hideTrustBadgeBear() {
+          // Trust Badge Bear app: #trust-bar iframe and #ultimateTrustBadgeswidgetDiv
+          ['trust-bar', 'ultimateTrustBadgeswidgetDiv'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) hideEl(el);
+          });
+          // Also catch by iframe title
+          document.querySelectorAll('iframe[title="trust-badges-widget"]').forEach(function(el) {
+            hideEl(el);
+            if (el.parentElement) hideEl(el.parentElement);
+          });
+        }
+
         function scanElement(el) {
           if (!el || el.nodeType !== 1) return;
           var inCart = el.closest && el.closest(CART_SELECTOR);
           if (inCart) return;
-
           var tag = el.tagName ? el.tagName.toLowerCase() : '';
 
-          // Always hide shopify-cleanslate outside cart
-          if (tag === 'shopify-cleanslate') {
-            hideEl(el, 'cleanslate outside cart');
-            return;
-          }
+          if (tag === 'shopify-cleanslate') { hideEl(el); return; }
+          if (el.className && typeof el.className === 'string' && el.className.includes('shopify-payment-button')) { hideEl(el); return; }
+          if (el.getAttribute && el.getAttribute('data-shopify') === 'payment-button') { hideEl(el); return; }
 
-          // Hide the payment-button wrapper container
-          if (el.className && typeof el.className === 'string' && el.className.includes('shopify-payment-button')) {
-            hideEl(el, 'shopify-payment-button class');
-            return;
-          }
-          if (el.getAttribute && el.getAttribute('data-shopify') === 'payment-button') {
-            hideEl(el, 'data-shopify=payment-button');
-            return;
-          }
-
-          // Check shadow root for badge text
           if (el.shadowRoot) {
             var shadowText = (el.shadowRoot.textContent || '').toLowerCase();
-            if (BADGE_PHRASES.some(function(k) { return shadowText.includes(k); })) {
-              hideEl(el, 'shadow root badge text');
-              return;
-            }
+            if (BADGE_PHRASES.some(function(k) { return shadowText.includes(k); })) { hideEl(el); return; }
           }
 
-          // Hide any element that directly contains the exact badge phrase as
-          // its own text (not inherited from children) — catches plain-HTML injections
-          if (containsBadgeText(el)) {
-            // Only trigger on container-level elements to avoid hiding large sections
-            if (tag === 'div' || tag === 'span' || tag === 'section' || tag === 'aside' || tag === 'p') {
-              hideEl(el, 'element text contains badge phrase');
-            }
+          if (tag === 'iframe' && (el.title || '').toLowerCase().includes('trust')) { hideEl(el); return; }
+
+          if (containsBadgeText(el) && (tag === 'div' || tag === 'span' || tag === 'section' || tag === 'aside')) {
+            hideEl(el);
           }
         }
 
         function run() {
-          // Hide all cleanslates outside cart
+          hideTrustBadgeBear();
           document.querySelectorAll('shopify-cleanslate').forEach(function(el) {
-            if (!el.closest(CART_SELECTOR)) {
-              el.style.setProperty('display', 'none', 'important');
-            }
+            if (!el.closest(CART_SELECTOR)) el.style.setProperty('display', 'none', 'important');
           });
-          // Hide all payment-button containers outside cart
           document.querySelectorAll('.shopify-payment-button, [data-shopify="payment-button"]').forEach(function(el) {
-            if (!el.closest(CART_SELECTOR)) {
-              el.style.setProperty('display', 'none', 'important');
-            }
+            if (!el.closest(CART_SELECTOR)) el.style.setProperty('display', 'none', 'important');
           });
-          // Scan everything else
           document.querySelectorAll('*').forEach(scanElement);
         }
 

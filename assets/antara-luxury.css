@@ -197,6 +197,21 @@ html {
 }
 
 /* ----------------------------------------------------------------
+   Trust Badge Bear app (trust.conversionbear.com) injects a
+   "Secure Checkout With" iframe badge onto product/collection pages.
+   The outer container is #ultimateTrustBadgeswidgetDiv and the
+   iframe itself is #trust-bar / iframe[title="trust-badges-widget"].
+   Hide these globally — they are decorative and not needed.
+   ---------------------------------------------------------------- */
+
+#trust-bar,
+#ultimateTrustBadgeswidgetDiv,
+iframe[title="trust-badges-widget"],
+iframe.widget[id="trust-bar"] {
+  display: none !important;
+}
+
+/* ----------------------------------------------------------------
    Hide ALL shopify-cleanslate injections globally.
    shopify-cleanslate is used by third-party apps to inject UI
    (trust badges, payment icons, etc.) via content_for_header.
