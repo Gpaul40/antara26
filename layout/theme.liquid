@@ -321,9 +321,8 @@
 
           e.preventDefault();
           overlay.classList.add('antara-leaving');
-          // White burn flash fires at peak of the cream fade (~220ms in)
-          setTimeout(function() { overlay.classList.add('antara-burn'); }, 220);
-          setTimeout(function() { window.location.href = href; }, 520);
+          // Navigate after fade is fully solid (450ms), new page fades in via CSS on arrival
+          setTimeout(function() { window.location.href = href; }, 500);
         });
 
         // Handle browser back/forward (bfcache)
