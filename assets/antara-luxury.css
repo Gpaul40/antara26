@@ -258,22 +258,23 @@ shopify-cleanslate {
 @media (pointer: fine) {
   html, body, * { cursor: none !important; }
 
+  /* mix-blend-mode: difference makes the cursor automatically invert
+     against any background — dark on light, light on dark */
   #antara-cursor {
     position: fixed;
     top: 0;
     left: 0;
-    width: 34px;
-    height: 34px;
-    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
     border-radius: 50%;
     pointer-events: none;
     z-index: 999997;
     transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
     transition:
-      width  0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.4s ease,
-      border-color 0.4s ease,
+      width  0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
       opacity 0.3s ease;
     will-change: left, top;
   }
@@ -289,26 +290,19 @@ shopify-cleanslate {
     pointer-events: none;
     z-index: 999998;
     transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
     will-change: left, top;
-    transition: transform 0.1s ease, opacity 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.15s ease, opacity 0.3s ease;
   }
 
-  /* On light sections: switch to dark slate */
-  .color-scheme--light #antara-cursor,
-  section:not([class*="dark"]) #antara-cursor {
-    border-color: #3D4B5C;
-  }
-
-  /* Ring expands + cream fill on interactive elements */
+  /* Ring grows on hover over interactive elements */
   body.antara-cursor-hover #antara-cursor {
-    width: 54px;
-    height: 54px;
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.9);
+    width: 64px;
+    height: 64px;
   }
 
   body.antara-cursor-hover #antara-cursor-dot {
-    transform: translate(-50%, -50%) scale(0.3);
+    transform: translate(-50%, -50%) scale(0.2);
   }
 
   /* Hide when mouse leaves window */
