@@ -330,6 +330,141 @@
           if (e.persisted) overlay.classList.remove('antara-leaving');
         });
 
+        // ── 4. LUXURY MARQUEE STRIP ───────────────────────────────
+        function buildMarquee() {
+          var items = ['Antara', 'Luxury Menswear', 'New Collection', 'Free Shipping Over $300', 'Antara International'];
+          var track = document.createElement('div');
+          track.className = 'antara-marquee-track';
+          [0, 1].forEach(function() {
+            items.forEach(function(text) {
+              var span = document.createElement('span');
+              span.className = 'antara-marquee-item';
+              span.textContent = text;
+              track.appendChild(span);
+              var sep = document.createElement('span');
+              sep.className = 'antara-marquee-sep';
+              track.appendChild(sep);
+            });
+          });
+          var strip = document.createElement('div');
+          strip.className = 'antara-marquee-strip';
+          strip.appendChild(track);
+          var sections = document.querySelectorAll('.shopify-section');
+          if (sections.length > 0) {
+            sections[0].insertAdjacentElement('afterend', strip);
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', buildMarquee);
+        } else {
+          buildMarquee();
+        }
+
+        // ── 5. PARALLAX EDITORIAL SECTIONS ───────────────────────
+        function initParallax() {
+          document.querySelectorAll('.hero__media, .banner__media, [class*="hero"] img, [class*="banner"] img').forEach(function(el) {
+            if (el.closest('.product-card, .card, .grid-product')) return;
+            el.dataset.parallax = '1';
+          });
+        }
+        var ticking = false;
+        function onParallaxScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function() {
+            document.querySelectorAll('[data-parallax]').forEach(function(el) {
+              var parent = el.closest('[class*="section"], [class*="hero"], [class*="banner"]') || el.parentElement;
+              if (!parent) { ticking = false; return; }
+              var bounds = parent.getBoundingClientRect();
+              var winH = window.innerHeight;
+              if (bounds.bottom < -100 || bounds.top > winH + 100) return;
+              var progress = (winH - bounds.top) / (winH + bounds.height);
+              var shift = (progress - 0.5) * 60;
+              el.style.transform = 'translateY(' + shift + 'px) scale(1.08)';
+              el.style.willChange = 'transform';
+            });
+            ticking = false;
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initParallax);
+        } else {
+          initParallax();
+        }
+        window.addEventListener('scroll', onParallaxScroll, { passive: true });
+
+        // ── 6. MAGNETIC BUTTONS ───────────────────────────────────
+        function initMagnetic() {
+          var BTN_SEL = '.btn, .button, [class*="btn--primary"], [class*="button--primary"], .product-form__submit';
+          document.querySelectorAll(BTN_SEL).forEach(function(btn) {
+            if (btn.dataset.mag) return;
+            btn.dataset.mag = '1';
+            btn.addEventListener('mousemove', function(e) {
+              var r = btn.getBoundingClientRect();
+              var dx = (e.clientX - (r.left + r.width / 2)) * 0.28;
+              var dy = (e.clientY - (r.top + r.height / 2)) * 0.28;
+              btn.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+              btn.style.transition = 'transform 0.15s ease';
+            });
+            btn.addEventListener('mouseleave', function() {
+              btn.style.transform = 'translate(0, 0)';
+              btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initMagnetic);
+        } else {
+          initMagnetic();
+        }
+
+        // ── 7. PRODUCT IMAGE ZOOM LENS ────────────────────────────
+        function initZoom() {
+          var ZOOM = 2.8;
+          var LENS_SIZE = 160;
+          document.querySelectorAll('.product-card__media, .product-media-container, [class*="product__media"]').forEach(function(host) {
+            if (host.dataset.zoom) return;
+            host.dataset.zoom = '1';
+            host.classList.add('antara-zoom-host');
+            var img = host.querySelector('img:first-of-type');
+            if (!img) return;
+            var lens = document.createElement('div');
+            lens.className = 'antara-zoom-lens';
+            var zoomImg = document.createElement('img');
+            zoomImg.src = img.src;
+            zoomImg.alt = '';
+            lens.appendChild(zoomImg);
+            host.appendChild(lens);
+            host.addEventListener('mouseenter', function() {
+              zoomImg.src = img.currentSrc || img.src;
+              zoomImg.style.width  = (img.offsetWidth  * ZOOM) + 'px';
+              zoomImg.style.height = (img.offsetHeight * ZOOM) + 'px';
+            });
+            host.addEventListener('mousemove', function(e) {
+              var r  = host.getBoundingClientRect();
+              var x  = e.clientX - r.left;
+              var y  = e.clientY - r.top;
+              var lx = Math.max(LENS_SIZE / 2, Math.min(r.width  - LENS_SIZE / 2, x));
+              var ly = Math.max(LENS_SIZE / 2, Math.min(r.height - LENS_SIZE / 2, y));
+              lens.style.left = (lx - LENS_SIZE / 2) + 'px';
+              lens.style.top  = (ly - LENS_SIZE / 2) + 'px';
+              lens.classList.add('is-active');
+              var zw = img.offsetWidth  * ZOOM;
+              var zh = img.offsetHeight * ZOOM;
+              lens.querySelector('img').style.left = Math.max(LENS_SIZE - zw, Math.min(0, -(x * ZOOM - LENS_SIZE / 2))) + 'px';
+              lens.querySelector('img').style.top  = Math.max(LENS_SIZE - zh, Math.min(0, -(y * ZOOM - LENS_SIZE / 2))) + 'px';
+            });
+            host.addEventListener('mouseleave', function() {
+              lens.classList.remove('is-active');
+            });
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initZoom);
+        } else {
+          initZoom();
+        }
+
       })();
     </script>
   </body>

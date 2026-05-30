@@ -370,3 +370,180 @@ shopify-cleanslate {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+/* ============================================================
+   LUXURY UPGRADES — Antara 2026
+   4. Marquee Strip
+   5. Frosted Glass Drawers
+   6. Gold Section Dividers
+   7. Editorial Typography
+   8. Product Image Zoom Lens
+   9. Parallax (JS-driven, see theme.liquid)
+   10. Magnetic Buttons (JS-driven, see theme.liquid)
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   4. LUXURY MARQUEE STRIP
+   ------------------------------------------------------------ */
+.antara-marquee-strip {
+  width: 100%;
+  overflow: hidden;
+  background: #3D4B5C;
+  padding: 13px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.antara-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: antara-marquee-scroll 32s linear infinite;
+}
+
+.antara-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.antara-marquee-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #C9A96E;
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-weight: 400;
+  padding-right: 0;
+}
+
+.antara-marquee-sep {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #C9A96E;
+  border-radius: 50%;
+  margin: 0 28px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+@keyframes antara-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ------------------------------------------------------------
+   5. FROSTED GLASS — Cart + Navigation Drawers
+   ------------------------------------------------------------ */
+cart-drawer,
+.cart-drawer {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+cart-drawer .cart-drawer__inner,
+.cart-drawer .cart-drawer__inner,
+cart-drawer .drawer__inner,
+.cart-drawer .drawer__inner {
+  background: rgba(250, 243, 228, 0.9) !important;
+}
+
+nav-drawer .drawer__panel,
+.nav-drawer .drawer__panel {
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(250, 243, 228, 0.92) !important;
+}
+
+/* ------------------------------------------------------------
+   6. GOLD SECTION DIVIDERS
+   Between shopify sections — thin gold gradient rule
+   ------------------------------------------------------------ */
+.shopify-section + .shopify-section::before {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #C9A96E 40%, #C9A96E 60%, transparent);
+  margin: 0 auto;
+}
+
+/* Don't add dividers before/after sections that manage their own spacing */
+.shopify-section:has(.antara-marquee-strip) + .shopify-section::before,
+.shopify-section + .shopify-section:has(.antara-marquee-strip)::before,
+.shopify-section:first-child::before {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   7. EDITORIAL TYPOGRAPHY
+   Large oversized serif brand statement
+   ------------------------------------------------------------ */
+.antara-editorial {
+  text-align: center;
+  padding: clamp(60px, 10vw, 120px) clamp(24px, 8vw, 120px);
+}
+
+.antara-editorial__quote {
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-size: clamp(28px, 4.8vw, 68px);
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-foreground, #1a1a1a);
+  display: block;
+  margin-bottom: 28px;
+}
+
+.antara-editorial__byline {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #C9A96E;
+  font-weight: 400;
+}
+
+/* Auto-upgrade large rich-text blocks to editorial scale */
+.shopify-section .rich-text__heading.heading--1,
+.shopify-section [class*="rich-text"] h1 {
+  font-size: clamp(32px, 5.2vw, 72px) !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.15 !important;
+}
+
+/* ------------------------------------------------------------
+   8. PRODUCT IMAGE ZOOM LENS
+   ------------------------------------------------------------ */
+.antara-zoom-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.antara-zoom-lens {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  z-index: 20;
+  box-shadow:
+    0 0 0 1px rgba(201, 169, 110, 0.5),
+    0 8px 32px rgba(0, 0, 0, 0.22);
+}
+
+.antara-zoom-lens.is-active {
+  opacity: 1;
+}
+
+.antara-zoom-lens img {
+  position: absolute;
+  pointer-events: none;
+  max-width: none !important;
+}
