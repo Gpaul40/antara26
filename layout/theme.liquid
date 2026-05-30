@@ -190,6 +190,138 @@
             run();
           }
         }).observe(document.body, { childList: true, subtree: true });
+    <script>
+      // ============================================================
+      // ANTARA PREMIUM ANIMATIONS
+      // 1. Custom Cursor  2. Text Reveal  3. Page Transitions
+      // ============================================================
+      (function antaraPremiumAnimations() {
+        'use strict';
+
+        // ── 1. CUSTOM CURSOR ──────────────────────────────────────
+        var hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+        if (hasFinePointer) {
+          var ring = document.createElement('div');
+          ring.id = 'antara-cursor';
+          var dot = document.createElement('div');
+          dot.id = 'antara-cursor-dot';
+          document.body.appendChild(ring);
+          document.body.appendChild(dot);
+
+          var mx = -200, my = -200;
+          var rx = -200, ry = -200;
+          var rafCursor;
+
+          document.addEventListener('mousemove', function(e) {
+            mx = e.clientX; my = e.clientY;
+            dot.style.left = mx + 'px';
+            dot.style.top  = my + 'px';
+            document.body.classList.remove('antara-cursor-hidden');
+          });
+
+          // Smooth lag on the ring via lerp
+          (function lerpCursor() {
+            rx += (mx - rx) * 0.13;
+            ry += (my - ry) * 0.13;
+            ring.style.left = rx + 'px';
+            ring.style.top  = ry + 'px';
+            requestAnimationFrame(lerpCursor);
+          })();
+
+          var HOVER_SEL = 'a, button, [role="button"], input, select, textarea, label, .product-card, .card, .btn';
+          document.addEventListener('mouseover', function(e) {
+            if (e.target.closest(HOVER_SEL)) document.body.classList.add('antara-cursor-hover');
+          });
+          document.addEventListener('mouseout', function(e) {
+            if (e.target.closest(HOVER_SEL)) document.body.classList.remove('antara-cursor-hover');
+          });
+          document.addEventListener('mouseleave', function() { document.body.classList.add('antara-cursor-hidden'); });
+          document.addEventListener('mouseenter', function() { document.body.classList.remove('antara-cursor-hidden'); });
+        }
+
+        // ── 2. TEXT REVEAL ────────────────────────────────────────
+        function wrapWords(el) {
+          if (el.children.length > 0) return false; // skip if contains HTML children
+          var text = el.textContent.trim();
+          if (!text) return false;
+          el.innerHTML = text.split(/\s+/).map(function(w) {
+            return '<span class="antara-word"><span class="antara-word-inner">' + w + '</span></span>';
+          }).join(' ');
+          return true;
+        }
+
+        function initReveal() {
+          var REVEAL_SEL = [
+            'main h1', 'main h2', 'main h3',
+            '.hero__title', '.section__heading',
+            '.section__subheading', '.rich-text__heading',
+            '.title-wrapper h2', '.title-wrapper h3'
+          ].join(', ');
+
+          document.querySelectorAll(REVEAL_SEL).forEach(function(el) {
+            if (el.closest('header, nav, .header') || el.dataset.ar) return;
+            el.dataset.ar = '1';
+            if (!wrapWords(el)) return;
+            el.classList.add('antara-text-reveal');
+          });
+
+          var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (!entry.isIntersecting) return;
+              var el = entry.target;
+              el.querySelectorAll('.antara-word-inner').forEach(function(inner, i) {
+                inner.style.transitionDelay = (i * 65) + 'ms';
+              });
+              el.classList.add('antara-text-revealed');
+              observer.unobserve(el);
+            });
+          }, { threshold: 0.15 });
+
+          document.querySelectorAll('.antara-text-reveal').forEach(function(el) {
+            observer.observe(el);
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initReveal);
+        } else {
+          initReveal();
+        }
+
+        // ── 3. PAGE TRANSITIONS ───────────────────────────────────
+        var overlay = document.createElement('div');
+        overlay.id = 'antara-page-overlay';
+        document.body.insertBefore(overlay, document.body.firstChild);
+
+        // Fade in on arrival
+        requestAnimationFrame(function() {
+          overlay.classList.remove('antara-leaving');
+        });
+
+        document.addEventListener('click', function(e) {
+          var link = e.target.closest('a[href]');
+          if (!link) return;
+          var href = link.getAttribute('href');
+          if (
+            !href || href.startsWith('#') || href.startsWith('javascript') ||
+            href.startsWith('mailto:') || href.startsWith('tel:') ||
+            link.target === '_blank' || link.hasAttribute('download') ||
+            e.ctrlKey || e.metaKey || e.shiftKey || e.altKey
+          ) return;
+          // Skip cart/drawer/search interactions
+          if (link.closest('form, [data-drawer-open], [data-quick-add], .cart, .search')) return;
+
+          e.preventDefault();
+          overlay.classList.add('antara-leaving');
+          setTimeout(function() { window.location.href = href; }, 400);
+        });
+
+        // Handle browser back/forward (bfcache)
+        window.addEventListener('pageshow', function(e) {
+          if (e.persisted) overlay.classList.remove('antara-leaving');
+        });
+
       })();
     </script>
   </body>

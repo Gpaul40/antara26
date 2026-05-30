@@ -241,3 +241,114 @@ shopify-cleanslate {
 [id*="cart"] .shopify-payment-button {
   display: block !important;
 }
+
+
+/* ============================================================
+   PREMIUM ANIMATIONS — Antara 2026
+   1. Custom Cursor
+   2. Text Reveal
+   3. Page Transitions
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. CUSTOM CURSOR
+   Only active on devices with a fine pointer (mouse/trackpad).
+   Uses Antara's dark slate (#3D4B5C) and cream gold (#FAF3E4).
+   ------------------------------------------------------------ */
+@media (pointer: fine) {
+  html, body, * { cursor: none !important; }
+
+  #antara-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid #3D4B5C;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999997;
+    transform: translate(-50%, -50%);
+    transition:
+      width  0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      opacity 0.3s ease;
+    will-change: left, top;
+    mix-blend-mode: multiply;
+  }
+
+  #antara-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    background: #3D4B5C;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999998;
+    transform: translate(-50%, -50%);
+    will-change: left, top;
+    transition: transform 0.1s ease, opacity 0.3s ease;
+  }
+
+  /* Ring expands + cream fill on interactive elements */
+  body.antara-cursor-hover #antara-cursor {
+    width: 54px;
+    height: 54px;
+    background-color: rgba(250, 243, 228, 0.35);
+    border-color: #3D4B5C;
+  }
+
+  /* Dot shrinks on hover */
+  body.antara-cursor-hover #antara-cursor-dot {
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  /* Cursor disappears when mouse leaves window */
+  body.antara-cursor-hidden #antara-cursor,
+  body.antara-cursor-hidden #antara-cursor-dot {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------
+   2. TEXT REVEAL — Word-by-word slide up
+   Words are wrapped in .antara-word > .antara-word-inner by JS.
+   ------------------------------------------------------------ */
+.antara-text-reveal .antara-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.06em; /* prevent descender clipping */
+}
+
+.antara-text-reveal .antara-word-inner {
+  display: inline-block;
+  transform: translateY(112%);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.antara-text-revealed .antara-word-inner {
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   3. PAGE TRANSITIONS — Luxury cream fade overlay
+   ------------------------------------------------------------ */
+#antara-page-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #FAF3E4;
+  z-index: 999996;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#antara-page-overlay.antara-leaving {
+  opacity: 1;
+  pointer-events: all;
+}
