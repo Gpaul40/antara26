@@ -201,19 +201,28 @@ html {
    shopify-cleanslate is used by third-party apps to inject UI
    (trust badges, payment icons, etc.) via content_for_header.
    Since accelerated_checkout_buttons is disabled on this store,
-   hiding globally is safe — only re-enable inside cart/checkout.
+   hiding globally is safe — only re-enable inside actual cart contexts.
+   NOTE: form[action*="/cart/add"] was intentionally REMOVED because
+   every product card quick-add button has that form action, and it was
+   accidentally re-enabling injected payment popups on product cards.
    ---------------------------------------------------------------- */
 
 shopify-cleanslate {
   display: none !important;
 }
 
-/* Re-enable inside cart and checkout contexts */
+/* Also hide the payment button container div Shopify apps inject */
+.shopify-payment-button,
+[data-shopify="payment-button"] {
+  display: none !important;
+}
+
+/* Re-enable ONLY inside the cart drawer / cart page */
 .cart shopify-cleanslate,
 .cart-drawer shopify-cleanslate,
 [id*="cart"] shopify-cleanslate,
-form[action*="/cart/add"] shopify-cleanslate,
-.product__info-wrapper shopify-cleanslate,
-.product-single__form shopify-cleanslate {
+.cart .shopify-payment-button,
+.cart-drawer .shopify-payment-button,
+[id*="cart"] .shopify-payment-button {
   display: block !important;
 }

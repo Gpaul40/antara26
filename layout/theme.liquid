@@ -117,14 +117,14 @@
 
     <script>
       // Badge hunter: hides injected payment/trust badges anywhere in the DOM.
-      // Also logs debug info to console so we can identify the element type.
       (function hideInjectedPaymentBadges() {
-        var BADGE_KEYWORDS = ['secure checkout', 'visa', 'mastercard', 'amex', 'american express', 'payment'];
-        var CART_SELECTOR = '.cart, .cart-drawer, [id*="cart"], form[action*="/cart/add"]';
+        var CART_SELECTOR = '.cart, .cart-drawer, [id*="cart"]';
+        // Exact phrases that identify a secure-checkout / trust-badge popup
+        var BADGE_PHRASES = ['secure checkout with', 'secure checkout', 'checkout securely'];
 
         function containsBadgeText(el) {
           var text = (el.textContent || '').toLowerCase();
-          return BADGE_KEYWORDS.some(function(k) { return text.includes(k); });
+          return BADGE_PHRASES.some(function(k) { return text.includes(k); });
         }
 
         function hideEl(el, reason) {
@@ -132,66 +132,65 @@
           el.style.setProperty('visibility', 'hidden', 'important');
           el.style.setProperty('opacity', '0', 'important');
           el.style.setProperty('pointer-events', 'none', 'important');
-          console.log('[BadgeHunter] Hidden element:', el.tagName, el.className, '| Reason:', reason);
         }
 
         function scanElement(el) {
-          // Check if element or its shadow root contains badge text
           if (!el || el.nodeType !== 1) return;
           var inCart = el.closest && el.closest(CART_SELECTOR);
           if (inCart) return;
 
-          // Check for shopify-cleanslate
-          if (el.tagName && el.tagName.toLowerCase() === 'shopify-cleanslate') {
-            if (containsBadgeText(el)) hideEl(el, 'shopify-cleanslate with badge text');
+          var tag = el.tagName ? el.tagName.toLowerCase() : '';
+
+          // Always hide shopify-cleanslate outside cart
+          if (tag === 'shopify-cleanslate') {
+            hideEl(el, 'cleanslate outside cart');
+            return;
           }
 
-          // Check shadow root
+          // Hide the payment-button wrapper container
+          if (el.className && typeof el.className === 'string' && el.className.includes('shopify-payment-button')) {
+            hideEl(el, 'shopify-payment-button class');
+            return;
+          }
+          if (el.getAttribute && el.getAttribute('data-shopify') === 'payment-button') {
+            hideEl(el, 'data-shopify=payment-button');
+            return;
+          }
+
+          // Check shadow root for badge text
           if (el.shadowRoot) {
             var shadowText = (el.shadowRoot.textContent || '').toLowerCase();
-            if (BADGE_KEYWORDS.some(function(k) { return shadowText.includes(k); })) {
-              hideEl(el, 'shadow root with badge text');
+            if (BADGE_PHRASES.some(function(k) { return shadowText.includes(k); })) {
+              hideEl(el, 'shadow root badge text');
+              return;
             }
           }
 
-          // Check for iframes
-          if (el.tagName && el.tagName.toLowerCase() === 'iframe') {
-            var src = (el.src || '').toLowerCase() + (el.getAttribute('title') || '').toLowerCase();
-            if (BADGE_KEYWORDS.some(function(k) { return src.includes(k); })) {
-              hideEl(el, 'iframe with badge src/title');
-            }
-            // Log all iframes for debugging
-            console.log('[BadgeHunter] Found iframe:', el.src, 'title:', el.getAttribute('title'), 'id:', el.id, 'class:', el.className);
-          }
-
-          // Check divs/spans with suspicious classes
-          var cls = (el.className || '').toLowerCase();
-          var id = (el.id || '').toLowerCase();
-          if ((cls.includes('badge') || cls.includes('trust') || cls.includes('secure') || cls.includes('checkout') || id.includes('badge') || id.includes('trust') || id.includes('secure')) && !inCart) {
-            if (containsBadgeText(el)) {
-              hideEl(el, 'class/id suggests badge: ' + el.className + ' ' + el.id);
+          // Hide any element that directly contains the exact badge phrase as
+          // its own text (not inherited from children) — catches plain-HTML injections
+          if (containsBadgeText(el)) {
+            // Only trigger on container-level elements to avoid hiding large sections
+            if (tag === 'div' || tag === 'span' || tag === 'section' || tag === 'aside' || tag === 'p') {
+              hideEl(el, 'element text contains badge phrase');
             }
           }
-        }
-
-        function scanAll() {
-          // Scan all elements in DOM
-          document.querySelectorAll('*').forEach(scanElement);
-        }
-
-        function hideUnwantedCleanslates() {
-          document.querySelectorAll('shopify-cleanslate').forEach(function(el) {
-            var inCart = el.closest('.cart, .cart-drawer, [id*="cart"], form[action*="/cart/add"]');
-            var inProductForm = el.closest('.product__info-wrapper, .product-single__form, product-form');
-            if (!inCart && !inProductForm) {
-              el.style.setProperty('display', 'none', 'important');
-            }
-          });
         }
 
         function run() {
-          scanAll();
-          hideUnwantedCleanslates();
+          // Hide all cleanslates outside cart
+          document.querySelectorAll('shopify-cleanslate').forEach(function(el) {
+            if (!el.closest(CART_SELECTOR)) {
+              el.style.setProperty('display', 'none', 'important');
+            }
+          });
+          // Hide all payment-button containers outside cart
+          document.querySelectorAll('.shopify-payment-button, [data-shopify="payment-button"]').forEach(function(el) {
+            if (!el.closest(CART_SELECTOR)) {
+              el.style.setProperty('display', 'none', 'important');
+            }
+          });
+          // Scan everything else
+          document.querySelectorAll('*').forEach(scanElement);
         }
 
         if (document.readyState === 'loading') {
