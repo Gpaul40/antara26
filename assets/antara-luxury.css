@@ -750,3 +750,556 @@ nav-drawer .drawer__panel,
   pointer-events: none;
   max-width: none !important;
 }
+
+
+/* ============================================================
+   SECTION 3: LUXURY SITE UPGRADES — Antara 2026
+   Based on brand identity: Moncler / Saint Laurent / Fear of God
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   A. TEXT SELECTION — Gold highlight
+   ------------------------------------------------------------ */
+::selection {
+  background: rgba(201, 169, 110, 0.22);
+  color: inherit;
+}
+
+/* ------------------------------------------------------------
+   B. FOCUS STYLES — Thin gold outline, no ugly browser default
+   ------------------------------------------------------------ */
+:focus-visible {
+  outline: 1px solid rgba(201, 169, 110, 0.6) !important;
+  outline-offset: 3px !important;
+}
+
+/* ------------------------------------------------------------
+   C. PRODUCT CARDS — Cinematic hover experience
+   Slow, intentional image scale + editorial overlay
+   ------------------------------------------------------------ */
+
+/* Image scale on card hover */
+.card__media img,
+.product-card__media img,
+[class*="card"] [class*="media"] img,
+.media img {
+  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  will-change: transform;
+}
+
+.card:hover .card__media img,
+.product-card:hover .product-card__media img,
+[class*="card"]:hover [class*="media"] img {
+  transform: scale(1.045) !important;
+}
+
+/* Subtle dark vignette overlay on card hover */
+.card__media,
+.product-card__media,
+[class*="card"] [class*="media"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.card__media::after,
+.product-card__media::after,
+[class*="card"] [class*="media"]:not(.media--background)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.28) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1;
+  pointer-events: none;
+}
+
+[class*="card"]:hover [class*="media"]:not(.media--background)::after {
+  opacity: 1;
+}
+
+/* Product card info — refined spacing and typography */
+.card__info,
+.product-card__info,
+[class*="card"] [class*="info"] {
+  padding-top: 14px !important;
+}
+
+.card__heading,
+.product-card__title,
+[class*="card"] [class*="title"],
+[class*="card"] [class*="heading"] {
+  font-size: 11.5px !important;
+  letter-spacing: 0.1em !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  line-height: 1.5 !important;
+}
+
+/* Price — understated, not salesy */
+.price,
+.price__regular,
+.price__sale,
+[class*="price"] {
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 300 !important;
+  opacity: 0.72;
+}
+
+/* Compare price (was price) — smaller, de-emphasised */
+.price__compare,
+s[class*="price"],
+[class*="compare-price"] {
+  font-size: 10px !important;
+  opacity: 0.4 !important;
+  text-decoration: line-through;
+}
+
+/* ------------------------------------------------------------
+   D. SALE & NEW BADGES — Luxury minimal pill
+   Replace chunky default badges with refined minimal tags
+   ------------------------------------------------------------ */
+.badge,
+.product-badge,
+[class*="badge"] {
+  font-size: 8px !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  padding: 4px 10px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: 1px solid currentColor !important;
+  color: #C9A96E !important;
+  line-height: 1.4 !important;
+}
+
+/* ------------------------------------------------------------
+   E. BUTTONS — Luxury refined styling
+   Thin border, uppercase tracking, smooth hover
+   ------------------------------------------------------------ */
+.button,
+button.button,
+a.button,
+[class*="btn"],
+input[type="submit"] {
+  font-size: 10px !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  border-radius: 0 !important;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.button:hover,
+[class*="btn"]:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* Primary button — refined dark fill */
+.button--primary,
+button.button--primary {
+  background: var(--color-button, #1a1a1a) !important;
+  color: var(--color-button-text, #fff) !important;
+  border: 1px solid var(--color-button, #1a1a1a) !important;
+}
+
+/* Secondary / outline button — thin border */
+.button--secondary,
+button.button--secondary {
+  background: transparent !important;
+  border: 1px solid currentColor !important;
+}
+
+/* ------------------------------------------------------------
+   F. ADD TO CART — Elevated luxury styling
+   ------------------------------------------------------------ */
+[class*="add-to-cart"],
+[name="add"],
+form[action*="/cart/add"] [type="submit"]:not([class*="payment"]) {
+  font-size: 10px !important;
+  letter-spacing: 0.26em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  border-radius: 0 !important;
+  padding: 18px 32px !important;
+  transition: background 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[class*="add-to-cart"]:hover,
+[name="add"]:hover,
+form[action*="/cart/add"] [type="submit"]:not([class*="payment"]):hover {
+  transform: translateY(-1px) !important;
+}
+
+/* ------------------------------------------------------------
+   G. PRODUCT PAGE — Editorial typography & spacing
+   ------------------------------------------------------------ */
+
+/* Product title */
+.product__title,
+[class*="product-title"],
+h1.heading {
+  font-size: clamp(20px, 2.8vw, 32px) !important;
+  letter-spacing: 0.1em !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase !important;
+}
+
+/* Product vendor / brand name above title */
+.product__vendor,
+[class*="product-vendor"],
+[class*="vendor"] {
+  font-size: 9px !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  opacity: 0.5;
+  margin-bottom: 12px !important;
+}
+
+/* Product price on product page */
+.product__price,
+[class*="product"] [class*="price__container"] {
+  margin: 20px 0 !important;
+}
+
+/* Product description / RTE on product page */
+.product__description,
+[class*="product"] .rte {
+  font-size: 12.5px !important;
+  line-height: 1.85 !important;
+  letter-spacing: 0.04em !important;
+  opacity: 0.82;
+}
+
+/* Variant labels — uppercase minimal */
+.product__variant-label,
+[class*="variant"] label,
+[class*="option"] label {
+  font-size: 9px !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  opacity: 0.65;
+}
+
+/* Variant buttons — thin pill style */
+.variant-button,
+[class*="variant"] button,
+[class*="swatch"] button,
+[class*="option"] button {
+  font-size: 10px !important;
+  letter-spacing: 0.1em !important;
+  border-radius: 0 !important;
+  border: 1px solid rgba(0,0,0,0.18) !important;
+  transition: border-color 0.25s ease, background 0.25s ease !important;
+}
+
+/* Quantity selector — refined minimal */
+.quantity__button,
+[class*="quantity"] button {
+  border-radius: 0 !important;
+  font-size: 14px !important;
+  font-weight: 300 !important;
+}
+
+.quantity__input,
+[class*="quantity"] input {
+  font-size: 11px !important;
+  letter-spacing: 0.12em !important;
+  border-radius: 0 !important;
+}
+
+/* Product tabs / accordion — thin elegant lines */
+.tab,
+[class*="accordion"] [class*="summary"],
+[class*="accordion"] summary {
+  font-size: 9.5px !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+  padding: 18px 0 !important;
+}
+
+/* ------------------------------------------------------------
+   H. COLLECTION PAGE — Editorial headings & refined grid
+   ------------------------------------------------------------ */
+
+/* Collection page title */
+.collection__title,
+[class*="collection-title"],
+.page-header h1,
+[class*="page-header"] h1 {
+  font-size: clamp(24px, 4vw, 48px) !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+  padding: clamp(40px, 6vw, 80px) 0 clamp(24px, 3vw, 40px) !important;
+}
+
+/* Collection description */
+.collection__description,
+[class*="collection"] .rte {
+  font-size: 12px !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.8 !important;
+  text-align: center !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  opacity: 0.7;
+}
+
+/* Filter/sort bar — minimal refined */
+[class*="facets"] label,
+[class*="filter"] label,
+[class*="sort"] label,
+[class*="sort"] select,
+[class*="filter"] button {
+  font-size: 9.5px !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* ------------------------------------------------------------
+   I. FORMS & INPUTS — Luxury thin-line style site-wide
+   ------------------------------------------------------------ */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+textarea,
+select {
+  border-radius: 0 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  transition: border-color 0.3s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: rgba(201, 169, 110, 0.6) !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------
+   J. BREADCRUMB — Whisper-thin minimal navigation trail
+   ------------------------------------------------------------ */
+.breadcrumbs,
+[class*="breadcrumb"] {
+  font-size: 9px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  opacity: 0.45;
+}
+
+/* ------------------------------------------------------------
+   K. LOADING / SKELETON — Elegant shimmer on image placeholders
+   ------------------------------------------------------------ */
+.media--placeholder,
+[class*="placeholder"],
+[class*="skeleton"] {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 25%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: antara-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes antara-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ------------------------------------------------------------
+   L. CART DRAWER — Luxury refinements
+   ------------------------------------------------------------ */
+/* Cart item title */
+[class*="cart"] [class*="item__title"],
+[class*="cart"] [class*="product-title"],
+cart-drawer [class*="title"] {
+  font-size: 11px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* Cart subtotal */
+[class*="cart"] [class*="subtotal"],
+[class*="cart"] [class*="total"] {
+  font-size: 10px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+}
+
+/* Cart drawer heading */
+[class*="cart-drawer"] [class*="drawer__heading"],
+[class*="cart-drawer"] h2,
+[class*="cart-drawer"] h3 {
+  font-size: 10px !important;
+  letter-spacing: 0.26em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* ------------------------------------------------------------
+   M. PAGE HEADER SECTIONS — Editorial spacing
+   ------------------------------------------------------------ */
+.section-header,
+[class*="section-header"],
+[class*="section__header"] {
+  padding-bottom: clamp(24px, 3vw, 48px) !important;
+}
+
+.section-header__title,
+[class*="section-header"] h2,
+[class*="section__header"] h2 {
+  font-size: clamp(14px, 2vw, 20px) !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* ------------------------------------------------------------
+   N. ANTARA EDITORIAL BRAND STATEMENT BLOCK
+   Injected by JS — cinematic large quote overlay
+   ------------------------------------------------------------ */
+.antara-brand-statement {
+  text-align: center;
+  padding: clamp(80px, 12vw, 160px) clamp(24px, 10vw, 200px);
+  position: relative;
+  overflow: hidden;
+}
+
+.antara-brand-statement::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(201,169,110,0.04) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+.antara-brand-statement__text {
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-size: clamp(22px, 4vw, 56px);
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-foreground, #1a1a1a);
+  position: relative;
+}
+
+.antara-brand-statement__label {
+  display: block;
+  margin-top: 28px;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C9A96E;
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------
+   O. HORIZONTAL RULES / DIVIDERS — Site-wide refinement
+   ------------------------------------------------------------ */
+hr {
+  border: none !important;
+  height: 1px !important;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.12) 30%, rgba(0,0,0,0.12) 70%, transparent) !important;
+  margin: 0 !important;
+}
+
+/* ------------------------------------------------------------
+   P. MOBILE REFINEMENTS — Preserve luxury feel on phone
+   ------------------------------------------------------------ */
+@media (max-width: 749px) {
+
+  /* Tighter product card titles on mobile */
+  .card__heading,
+  .product-card__title,
+  [class*="card"] [class*="title"] {
+    font-size: 10.5px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* Product page title more compact */
+  .product__title,
+  h1.heading {
+    font-size: clamp(18px, 6vw, 26px) !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* Add to cart full width, generous padding */
+  [class*="add-to-cart"],
+  [name="add"],
+  form[action*="/cart/add"] [type="submit"]:not([class*="payment"]) {
+    width: 100% !important;
+    padding: 20px 24px !important;
+  }
+
+  /* Collection title mobile */
+  .collection__title,
+  [class*="collection-title"],
+  .page-header h1 {
+    font-size: clamp(20px, 7vw, 32px) !important;
+    padding: 32px 0 20px !important;
+  }
+
+  /* Button text slightly larger on mobile for readability */
+  .button,
+  button.button {
+    font-size: 9.5px !important;
+    padding: 16px 24px !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Q. IMAGE HOVER LIFT — Subtle elevation on product grid images
+   ------------------------------------------------------------ */
+@media (hover: hover) {
+  [class*="card"]:hover {
+    transform: translateY(-2px);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* ------------------------------------------------------------
+   R. ANTARA WORDMARK WATERMARK — Subtle background on sections
+   ------------------------------------------------------------ */
+.antara-watermark-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.antara-watermark-section::after {
+  content: 'ANTARA';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading-family, Georgia, serif);
+  font-size: clamp(80px, 20vw, 240px);
+  letter-spacing: 0.3em;
+  font-weight: 400;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201,169,110,0.06);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
