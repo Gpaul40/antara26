@@ -43,7 +43,7 @@
         "newsletter_subtext": {
           "type": "text",
           "settings": {
-            "text": "Exclusive releases, campaigns and early access.",
+            "text": "<p>Exclusive releases, campaigns and early access.</p>",
             "width": "100%",
             "alignment": "center",
             "type_preset": "rte"
@@ -113,7 +113,7 @@
             "brand_tagline": {
               "type": "text",
               "settings": {
-                "text": "Timeless luxury designed with intention.",
+                "text": "<p>Timeless luxury designed with intention.</p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "rte"
@@ -123,7 +123,7 @@
             "brand_origin": {
               "type": "text",
               "settings": {
-                "text": "Melbourne, Australia",
+                "text": "<p>Melbourne, Australia</p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "rte"
@@ -133,7 +133,7 @@
             "brand_nfc": {
               "type": "text",
               "settings": {
-                "text": "Selected pieces include NFC authentication technology.",
+                "text": "<p>Selected pieces include NFC authentication technology.</p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "rte"
@@ -203,7 +203,7 @@
             "community_heading": {
               "type": "text",
               "settings": {
-                "text": "COMMUNITY",
+                "text": "<h5>COMMUNITY</h5>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "h5"
@@ -213,7 +213,7 @@
             "community_handle": {
               "type": "text",
               "settings": {
-                "text": "@antaramelb",
+                "text": "<p>@antaramelb</p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "rte"
