@@ -388,19 +388,26 @@ footer .footer-content h5 {
   opacity: 0.5;
 }
 
-/* Footer links — refined small text */
+/* Footer links — refined small text with hover animation */
 footer .footer-content a,
 footer .footer-content [class*="menu"] a {
   font-size: 11.5px !important;
   letter-spacing: 0.06em !important;
   font-weight: 300 !important;
-  opacity: 0.75;
-  transition: opacity 0.25s ease;
+  opacity: 0.65;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
   text-decoration: none !important;
+  display: inline-block;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: left bottom 1px;
+  transition: opacity 0.3s ease, background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 footer .footer-content a:hover {
   opacity: 1;
+  background-size: 100% 1px;
 }
 
 /* Brand tagline, origin, NFC text */
@@ -412,12 +419,32 @@ footer .footer-content p {
   opacity: 0.65;
 }
 
+/* Logo — slightly visible, not invisible */
+footer .footer-content [class*="logo"] img,
+footer .footer-content [class*="logo"] svg {
+  opacity: 0.16 !important;
+  transition: opacity 0.35s ease;
+  max-width: 80px !important;
+}
+
+footer .footer-content [class*="logo"]:hover img,
+footer .footer-content [class*="logo"]:hover svg {
+  opacity: 0.32 !important;
+}
+
 /* Newsletter section subtext */
 .footer-group .newsletter-subtext,
 footer .rte p {
   font-size: 11px;
   letter-spacing: 0.1em;
   opacity: 0.6;
+}
+
+/* Tighten newsletter top section vertical padding */
+.shopify-section .footer-group__newsletter,
+[data-section-id="section_9FjKrC"] {
+  padding-block-start: 32px !important;
+  padding-block-end: 32px !important;
 }
 
 /* Utilities bar — copyright */
@@ -435,24 +462,37 @@ footer .rte p {
   letter-spacing: 0.12em !important;
   opacity: 0.45;
   text-decoration: none !important;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease !important;
 }
 
 .footer-utilities a:hover {
   opacity: 0.8;
 }
 
-/* Social icons — smaller, restrained */
+/* Social icons — subtle but not invisible, rise on hover */
 footer .social-icons__wrapper svg,
-footer [class*="social"] svg {
+footer [class*="social"] svg,
+footer [class*="social-links"] svg {
   width: 16px !important;
   height: 16px !important;
-  opacity: 0.7;
-  transition: opacity 0.25s ease;
+  opacity: 0.45;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-footer [class*="social"] a:hover svg {
+footer [class*="social"] a,
+footer [class*="social-links"] a {
+  display: inline-flex;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+footer [class*="social"] a:hover svg,
+footer [class*="social-links"] a:hover svg {
   opacity: 1;
+}
+
+footer [class*="social"] a:hover,
+footer [class*="social-links"] a:hover {
+  transform: translateY(-3px);
 }
    4. Marquee Strip
    5. Frosted Glass Drawers

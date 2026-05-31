@@ -80,8 +80,8 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 36,
+        "padding-block-end": 36
       }
     },
     "footer": {
@@ -105,7 +105,7 @@
             "brand_logo": {
               "type": "logo",
               "settings": {
-                "logo_width": 90,
+                "logo_width": 72,
                 "link_to_homepage": true
               },
               "blocks": {}
@@ -113,7 +113,7 @@
             "brand_tagline": {
               "type": "text",
               "settings": {
-                "text": "<p>Timeless luxury designed with intention.</p>",
+                "text": "<p>Confidence, restraint and timeless design.</p>",
                 "width": "100%",
                 "alignment": "left",
                 "type_preset": "rte"
@@ -251,7 +251,7 @@
       ],
       "settings": {
         "section_width": "page-width",
-        "gap": 40,
+        "gap": 56,
         "color_scheme": "",
         "padding-block-start": 64,
         "padding-block-end": 64
@@ -282,8 +282,7 @@
       "block_order": [
         "copyright",
         "footer_policy_list_wrEqbN"
-      ],
-      "settings": {
+      ],      "settings": {
         "section_width": "page-width",
         "gap": 16,
         "divider_thickness": 1,
