@@ -373,7 +373,87 @@ shopify-cleanslate {
 
 
 /* ============================================================
-   LUXURY UPGRADES — Antara 2026
+   LUXURY FOOTER — Antara 2026
+   ============================================================ */
+
+/* Footer section headings — tight uppercase tracking */
+footer .footer-content [class*="menu"] [class*="heading"],
+footer .footer-content h4,
+footer .footer-content h5 {
+  font-size: 9px !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  margin-bottom: 20px !important;
+  opacity: 0.5;
+}
+
+/* Footer links — refined small text */
+footer .footer-content a,
+footer .footer-content [class*="menu"] a {
+  font-size: 11.5px !important;
+  letter-spacing: 0.06em !important;
+  font-weight: 300 !important;
+  opacity: 0.75;
+  transition: opacity 0.25s ease;
+  text-decoration: none !important;
+}
+
+footer .footer-content a:hover {
+  opacity: 1;
+}
+
+/* Brand tagline, origin, NFC text */
+footer .footer-content .rte,
+footer .footer-content p {
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.7 !important;
+  opacity: 0.65;
+}
+
+/* Newsletter section subtext */
+.footer-group .newsletter-subtext,
+footer .rte p {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+/* Utilities bar — copyright */
+.footer-utilities [class*="copyright"] span,
+.footer-utilities .footer-utilities__text {
+  font-size: 9px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  opacity: 0.45;
+}
+
+/* Utilities bar — policy links */
+.footer-utilities a {
+  font-size: 9px !important;
+  letter-spacing: 0.12em !important;
+  opacity: 0.45;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease;
+}
+
+.footer-utilities a:hover {
+  opacity: 0.8;
+}
+
+/* Social icons — smaller, restrained */
+footer .social-icons__wrapper svg,
+footer [class*="social"] svg {
+  width: 16px !important;
+  height: 16px !important;
+  opacity: 0.7;
+  transition: opacity 0.25s ease;
+}
+
+footer [class*="social"] a:hover svg {
+  opacity: 1;
+}
    4. Marquee Strip
    5. Frosted Glass Drawers
    6. Gold Section Dividers

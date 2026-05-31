@@ -39,9 +39,20 @@
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "newsletter_subtext": {
+          "type": "text",
+          "settings": {
+            "text": "Exclusive releases, campaigns and early access.",
+            "width": "100%",
+            "alignment": "center",
+            "type_preset": "rte"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
+        "newsletter_subtext",
         "email_signup_TCQELN"
       ],
       "name": "t:names.email_signup",
@@ -69,27 +80,83 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "footer": {
       "type": "Footer",
       "blocks": {
-        "menu_HADdVb": {
+        "brand_col": {
+          "type": "group",
+          "name": "Brand",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "gap": 14,
+            "width": "fill",
+            "inherit_color_scheme": true,
+            "color_scheme": ""
+          },
+          "blocks": {
+            "brand_logo": {
+              "type": "logo",
+              "settings": {
+                "logo_width": 90,
+                "link_to_homepage": true
+              },
+              "blocks": {}
+            },
+            "brand_tagline": {
+              "type": "text",
+              "settings": {
+                "text": "Timeless luxury designed with intention.",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte"
+              },
+              "blocks": {}
+            },
+            "brand_origin": {
+              "type": "text",
+              "settings": {
+                "text": "Melbourne, Australia",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte"
+              },
+              "blocks": {}
+            },
+            "brand_nfc": {
+              "type": "text",
+              "settings": {
+                "text": "Selected pieces include NFC authentication technology.",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": ["brand_logo", "brand_tagline", "brand_origin", "brand_nfc"]
+        },
+        "shop_menu": {
           "type": "menu",
-          "name": "t:names.menu",
+          "name": "Shop",
           "settings": {
             "menu": "footer",
-            "heading": "Shop",
-            "menu_spacing": 8,
+            "heading": "SHOP",
+            "menu_spacing": 10,
             "show_as_accordion": false,
             "accordion_icon": "caret",
             "accordion_dividers": false,
             "inherit_color_scheme": true,
             "color_scheme": "",
-            "heading_preset": "h4",
-            "link_preset": "h5",
+            "heading_preset": "h5",
+            "link_preset": "h6",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -97,38 +164,97 @@
           },
           "blocks": {}
         },
-        "menu_LhkDcq": {
+        "info_menu": {
           "type": "menu",
-          "name": "t:names.menu",
+          "name": "Information",
           "settings": {
             "menu": "contact-menu",
-            "heading": "Connect",
-            "menu_spacing": 8,
+            "heading": "INFORMATION",
+            "menu_spacing": 10,
             "show_as_accordion": false,
             "accordion_icon": "caret",
             "accordion_dividers": false,
             "inherit_color_scheme": true,
             "color_scheme": "",
-            "heading_preset": "h4",
-            "link_preset": "h5",
+            "heading_preset": "h5",
+            "link_preset": "h6",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "community_col": {
+          "type": "group",
+          "name": "Community",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "gap": 14,
+            "width": "fill",
+            "inherit_color_scheme": true,
+            "color_scheme": ""
+          },
+          "blocks": {
+            "community_heading": {
+              "type": "text",
+              "settings": {
+                "text": "COMMUNITY",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h5"
+              },
+              "blocks": {}
+            },
+            "community_handle": {
+              "type": "text",
+              "settings": {
+                "text": "@antaramelb",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte"
+              },
+              "blocks": {}
+            },
+            "community_socials": {
+              "type": "social-links",
+              "settings": {
+                "facebook_url": "",
+                "instagram_url": "https://www.instagram.com/antaramelb/",
+                "youtube_url": "",
+                "tiktok_url": "https://www.tiktok.com/@antara.international",
+                "twitter_url": "",
+                "threads_url": "",
+                "linkedin_url": "",
+                "bluesky_url": "",
+                "snapchat_url": "",
+                "pinterest_url": "https://pin.it/25jopGj",
+                "tumblr_url": "",
+                "vimeo_url": "",
+                "custom_url": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": ["community_heading", "community_handle", "community_socials"]
         }
       },
       "block_order": [
-        "menu_HADdVb",
-        "menu_LhkDcq"
+        "brand_col",
+        "shop_menu",
+        "info_menu",
+        "community_col"
       ],
       "settings": {
         "section_width": "page-width",
-        "gap": 0,
+        "gap": 40,
         "color_scheme": "",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     },
     "utilities": {
@@ -139,7 +265,7 @@
           "settings": {
             "show_powered_by": false,
             "font_size": "0.75rem",
-            "case": "none"
+            "case": "uppercase"
           },
           "blocks": {}
         },
@@ -151,40 +277,19 @@
             "case": "none"
           },
           "blocks": {}
-        },
-        "social_links_F94qGb": {
-          "type": "social-links",
-          "name": "t:names.social_media_links",
-          "settings": {
-            "facebook_url": "https://www.facebook.com/antara.international/",
-            "instagram_url": "https://www.instagram.com/antaramelb/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/@antara.international?_r=1&_t=ZS-93PdT7T0ylJ",
-            "twitter_url": "https://x.com/Antara_Int?s=20",
-            "threads_url": "",
-            "linkedin_url": "https://www.linkedin.com/company/antarainternational/",
-            "bluesky_url": "",
-            "snapchat_url": "",
-            "pinterest_url": "https://pin.it/25jopGj",
-            "tumblr_url": "",
-            "vimeo_url": "",
-            "custom_url": ""
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "copyright",
-        "footer_policy_list_wrEqbN",
-        "social_links_F94qGb"
+        "footer_policy_list_wrEqbN"
       ],
       "settings": {
         "section_width": "page-width",
-        "gap": 24,
-        "divider_thickness": 0,
+        "gap": 16,
+        "divider_thickness": 1,
         "color_scheme": "",
-        "padding-block-start": 0,
-        "padding-block-end": 40
+        "padding-block-start": 24,
+        "padding-block-end": 36
       }
     }
   },
