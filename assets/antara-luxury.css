@@ -858,19 +858,11 @@ s[class*="price"],
 
 /* ------------------------------------------------------------
    D. SALE & NEW BADGES — Luxury minimal pill
-   Only style badges that have visible text content
+   Replace chunky default badges with refined minimal tags
    ------------------------------------------------------------ */
-
-/* Hide empty badge elements (they show as outline boxes otherwise) */
-.badge:empty,
-.product-badge:empty,
-[class*="badge"]:empty {
-  display: none !important;
-}
-
-/* Style badges with text */
-.badge:not(:empty),
-.product-badge:not(:empty) {
+.badge,
+.product-badge,
+[class*="badge"] {
   font-size: 8px !important;
   letter-spacing: 0.22em !important;
   text-transform: uppercase !important;
@@ -878,32 +870,44 @@ s[class*="price"],
   padding: 4px 10px !important;
   border-radius: 0 !important;
   background: transparent !important;
-  border: 1px solid rgba(201,169,110,0.6) !important;
+  border: 1px solid currentColor !important;
   color: #C9A96E !important;
   line-height: 1.4 !important;
 }
 
 /* ------------------------------------------------------------
-   E. BUTTONS — Luxury refined typography only
-   Only override font/tracking — do NOT override background/color
-   to avoid breaking quick-add and card buttons
+   E. BUTTONS — Luxury refined styling
+   Thin border, uppercase tracking, smooth hover
    ------------------------------------------------------------ */
-.button:not([class*="quick"]):not([class*="card"]):not([data-quick-add]):not([class*="icon"]),
-a.button:not([class*="quick"]):not([class*="card"]) {
+.button,
+button.button,
+a.button,
+[class*="btn"],
+input[type="submit"] {
   font-size: 10px !important;
   letter-spacing: 0.22em !important;
   text-transform: uppercase !important;
   font-weight: 400 !important;
   border-radius: 0 !important;
-  transition: background 0.35s ease, color 0.35s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.button:not([class*="quick"]):not([class*="card"]):not([data-quick-add]):hover {
+.button:hover,
+[class*="btn"]:hover {
   transform: translateY(-1px) !important;
 }
 
-/* Secondary / outline button — only on full-size buttons, not card overlays */
-.button--secondary:not([class*="quick"]):not([class*="card"]) {
+/* Primary button — refined dark fill */
+.button--primary,
+button.button--primary {
+  background: var(--color-button, #1a1a1a) !important;
+  color: var(--color-button-text, #fff) !important;
+  border: 1px solid var(--color-button, #1a1a1a) !important;
+}
+
+/* Secondary / outline button — thin border */
+.button--secondary,
+button.button--secondary {
   background: transparent !important;
   border: 1px solid currentColor !important;
 }
@@ -1101,13 +1105,19 @@ select:focus {
 }
 
 /* ------------------------------------------------------------
-   K. LOADING / SKELETON — safe scope only (svg placeholders)
-   Intentionally NOT targeting .media or [class*="placeholder"]
-   as those match real product image containers in Prestige theme.
+   K. LOADING / SKELETON — Elegant shimmer on image placeholders
    ------------------------------------------------------------ */
-.placeholder-svg,
-svg.placeholder-svg {
-  opacity: 0.06;
+.media--placeholder,
+[class*="placeholder"],
+[class*="skeleton"] {
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 25%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: antara-shimmer 1.8s ease-in-out infinite;
 }
 
 @keyframes antara-shimmer {
