@@ -159,6 +159,10 @@
         "padding-block-end": 48
       }
     },
+    "game_cta_banner": {
+      "type": "game-cta",
+      "settings": {}
+    },
     "slideshow_mXzRei": {
       "type": "slideshow",
       "blocks": {
@@ -937,6 +941,7 @@
   "order": [
     "product_list_jpXcjW",
     "slideshow_mXzRei",
+    "game_cta_banner",
     "product_list_ECtGEz",
     "product_list_KxJghU",
     "section_JUcTbQ",
