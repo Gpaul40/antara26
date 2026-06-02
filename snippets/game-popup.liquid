@@ -14,21 +14,6 @@
   </div>
 </div>
 
-{%- comment -%} Floating trigger button {%- endcomment -%}
-<button id="agp-trigger" class="agp-trigger" onclick="antaraOpenPopup()" aria-label="Play The Edit game">
-  <span class="agp-trigger-ring agp-trigger-ring-1"></span>
-  <span class="agp-trigger-ring agp-trigger-ring-2"></span>
-  <span class="agp-trigger-inner">
-    <svg class="agp-trigger-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="6,3 20,12 6,21" fill="currentColor"/>
-    </svg>
-    <span class="agp-trigger-text">
-      <span class="agp-trigger-label">THE EDIT</span>
-      <span class="agp-trigger-sub">WIN 30% OFF</span>
-    </span>
-  </span>
-</button>
-
 <style>
   /* ── Popup overlay ───────────────────────────────────────── */
   .agp-overlay {
@@ -88,104 +73,10 @@
     to   { opacity: 1; }
   }
 
-  /* ── Floating trigger button ─────────────────────────────── */
-  .agp-trigger {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    background: #0a0a0a;
-    border: 1px solid rgba(201,169,110,0.6);
-    border-radius: 60px;
-    padding: 10px 20px 10px 14px;
-    cursor: pointer;
-    gap: 12px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    box-shadow: 0 4px 32px rgba(201,169,110,0.15);
-    animation: agpSlideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 3s both;
-  }
-  .agp-trigger:hover {
-    transform: translateY(-3px) scale(1.03);
-    border-color: #c9a96e;
-    box-shadow: 0 8px 40px rgba(201,169,110,0.35);
-  }
-  .agp-trigger:active { transform: translateY(0) scale(0.98); }
-
-  /* pulsing rings */
-  .agp-trigger-ring {
-    position: absolute;
-    inset: -1px;
-    border-radius: 60px;
-    border: 1px solid rgba(201,169,110,0.5);
-    animation: agpPulse 2.4s ease-out infinite;
-  }
-  .agp-trigger-ring-2 { animation-delay: 1.2s; }
-  @keyframes agpPulse {
-    0%   { transform: scale(1);    opacity: 0.7; }
-    100% { transform: scale(1.55); opacity: 0; }
-  }
-
-  /* play icon circle */
-  .agp-trigger-icon {
-    width: 18px;
-    height: 18px;
-    color: #c9a96e;
-    flex-shrink: 0;
-  }
-
-  /* text stack */
-  .agp-trigger-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1px;
-  }
-  .agp-trigger-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #c9a96e;
-    font-weight: 600;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-  .agp-trigger-sub {
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(201,169,110,0.6);
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-
-  /* shimmer sweep on hover */
-  .agp-trigger::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 60px;
-    background: linear-gradient(105deg, transparent 40%, rgba(201,169,110,0.12) 50%, transparent 60%);
-    background-size: 200% 100%;
-    background-position: 200% 0;
-    transition: background-position 0.5s ease;
-  }
-  .agp-trigger:hover::after { background-position: -100% 0; }
-
-  @keyframes agpSlideUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
   @media (max-width: 600px) {
     .agp-container { padding: 0; }
     #agp-iframe { max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
     .agp-close { top: 12px; right: 12px; }
-    .agp-trigger { bottom: 20px; right: 16px; padding: 9px 16px 9px 12px; }
-    .agp-trigger-label { font-size: 10px; }
-    .agp-trigger-sub { font-size: 8px; }
   }
 </style>
 
@@ -198,17 +89,6 @@
       var el = document.getElementById('antara-game-popup');
       if (el) el.style.display = 'block';
       document.body.style.overflow = 'hidden';
-      hideTrigger();
-    }
-
-    function hideTrigger() {
-      var btn = document.getElementById('agp-trigger');
-      if (btn) btn.style.display = 'none';
-    }
-
-    function showTrigger() {
-      var btn = document.getElementById('agp-trigger');
-      if (btn) btn.style.display = 'flex';
     }
 
     window.antaraOpenPopup = function() {
@@ -223,7 +103,6 @@
         setTimeout(function() { el.style.display = 'none'; el.style.opacity = ''; }, 300);
       }
       document.body.style.overflow = '';
-      showTrigger();
       try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e) {}
     };
 
