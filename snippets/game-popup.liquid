@@ -3,13 +3,33 @@
   <div class="agp-backdrop"></div>
   <div class="agp-container">
     <button class="agp-close" aria-label="Close game" onclick="antaraClosePopup()">&times;</button>
+
+    <!-- Intro splash screen -->
+    <div id="agp-intro" class="agp-intro">
+      <p class="agp-eyebrow">ANTARA INTERNATIONAL</p>
+      <h2 class="agp-title">THE EDIT</h2>
+      <p class="agp-tagline">A MEMORY CHALLENGE FOR THOSE WHO MOVE WITH INTENTION.</p>
+      <hr class="agp-rule">
+      <p class="agp-desc">Match all pairs to complete the challenge.<br>Beat it in time — win 30% off your next order.</p>
+      <hr class="agp-rule">
+      <div class="agp-tier">
+        <p class="agp-tier-name">THE COLLECTOR</p>
+        <p class="agp-tier-discount">30% OFF</p>
+        <p class="agp-tier-meta">2 levels &middot; 44 pairs each &middot; +10s per match</p>
+      </div>
+      <div class="agp-actions">
+        <button class="agp-begin-btn" onclick="antaraBeginGame()">BEGIN</button>
+        <button class="agp-nothanks-btn" onclick="antaraClosePopup()">No thanks</button>
+      </div>
+    </div>
+
+    <!-- Game iframe (hidden until BEGIN is clicked) -->
     <iframe
       id="agp-iframe"
-      src="https://antara-game.vercel.app"
       title="The Edit — Antara Memory Game"
       frameborder="0"
       allow="autoplay"
-      loading="lazy"
+      style="display:none"
     ></iframe>
   </div>
 </div>
@@ -38,6 +58,123 @@
     padding: 20px;
     pointer-events: none;
   }
+
+  /* ── Intro splash ────────────────────────────────────────── */
+  .agp-intro {
+    pointer-events: all;
+    background: #0d0d0d;
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 4px;
+    max-width: 560px;
+    width: 100%;
+    padding: 52px 48px 44px;
+    text-align: center;
+    color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  }
+  .agp-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: #c9a96e;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .agp-title {
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    margin: 0 0 18px;
+    line-height: 1;
+  }
+  .agp-tagline {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 20px;
+    line-height: 1.6;
+  }
+  .agp-rule {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    margin: 0 0 20px;
+  }
+  .agp-desc {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 20px;
+    line-height: 1.7;
+  }
+  .agp-tier {
+    border: 1px solid rgba(201,169,110,0.35);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 0 0 32px;
+  }
+  .agp-tier-name {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin: 0 0 4px;
+  }
+  .agp-tier-discount {
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #c9a96e;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .agp-tier-meta {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+  }
+
+  /* ── Action buttons ──────────────────────────────────────── */
+  .agp-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .agp-begin-btn {
+    background: transparent;
+    border: 1px solid #c9a96e;
+    color: #c9a96e;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 14px 48px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+    font-family: inherit;
+    width: 200px;
+  }
+  .agp-begin-btn:hover {
+    background: #c9a96e;
+    color: #0d0d0d;
+  }
+  .agp-nothanks-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.35);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    padding: 4px 8px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-family: inherit;
+    transition: color 0.2s;
+  }
+  .agp-nothanks-btn:hover { color: rgba(255,255,255,0.65); }
+
+  /* ── Game iframe ─────────────────────────────────────────── */
   #agp-iframe {
     width: 100%;
     max-width: 900px;
@@ -74,7 +211,8 @@
   }
 
   @media (max-width: 600px) {
-    .agp-container { padding: 0; }
+    .agp-container { padding: 0; align-items: flex-start; overflow-y: auto; }
+    .agp-intro { border-radius: 0; padding: 40px 24px 36px; }
     #agp-iframe { max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
     .agp-close { top: 12px; right: 12px; }
   }
@@ -95,12 +233,30 @@
       showPopup();
     };
 
+    window.antaraBeginGame = function() {
+      var intro = document.getElementById('agp-intro');
+      var iframe = document.getElementById('agp-iframe');
+      if (intro) intro.style.display = 'none';
+      if (iframe) {
+        iframe.src = 'https://antara-game.vercel.app';
+        iframe.style.display = 'block';
+      }
+    };
+
     window.antaraClosePopup = function() {
       var el = document.getElementById('antara-game-popup');
       if (el) {
         el.style.opacity = '0';
         el.style.transition = 'opacity 0.3s';
-        setTimeout(function() { el.style.display = 'none'; el.style.opacity = ''; }, 300);
+        setTimeout(function() {
+          el.style.display = 'none';
+          el.style.opacity = '';
+          // reset to intro screen for next open
+          var intro = document.getElementById('agp-intro');
+          var iframe = document.getElementById('agp-iframe');
+          if (intro) intro.style.display = '';
+          if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+        }, 300);
       }
       document.body.style.overflow = '';
       try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e) {}
