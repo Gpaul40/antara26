@@ -1,131 +1,117 @@
-{% comment %} The Edit — Centered game CTA banner {% endcomment %}
-<div class="agc-wrap">
-  <button class="agc-btn" onclick="antaraOpenPopup()" aria-label="Play The Edit">
-    <span class="agc-ring agc-ring-1"></span>
-    <span class="agc-ring agc-ring-2"></span>
-    <span class="agc-inner">
-      <svg class="agc-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <polygon points="6,3 20,12 6,21" fill="currentColor"/>
-      </svg>
-      <span class="agc-text">
-        <span class="agc-label">PLAY THE EDIT</span>
-        <span class="agc-sub">Match the pieces — WIN 30% OFF</span>
-      </span>
+{% comment %} The Edit — scrolling ticker banner {% endcomment %}
+<div class="agc-ticker-wrap" role="banner">
+  <button class="agc-ticker-track" onclick="antaraOpenPopup()" aria-label="Play The Edit — Win 30% off">
+    <span class="agc-ticker-inner" aria-hidden="true">
+      {%- for i in (1..8) -%}
+        <span class="agc-ticker-item">
+          <svg class="agc-ticker-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="6,3 20,12 6,21" fill="currentColor"/></svg>
+          <span class="agc-ticker-label">PLAY THE EDIT</span>
+          <span class="agc-ticker-sep">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+          <span class="agc-ticker-sub">WIN 30% OFF</span>
+          <span class="agc-ticker-sep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </span>
+      {%- endfor -%}
+    </span>
+    <span class="agc-ticker-inner agc-ticker-inner--clone" aria-hidden="true">
+      {%- for i in (1..8) -%}
+        <span class="agc-ticker-item">
+          <svg class="agc-ticker-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="6,3 20,12 6,21" fill="currentColor"/></svg>
+          <span class="agc-ticker-label">PLAY THE EDIT</span>
+          <span class="agc-ticker-sep">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+          <span class="agc-ticker-sub">WIN 30% OFF</span>
+          <span class="agc-ticker-sep">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </span>
+      {%- endfor -%}
     </span>
   </button>
 </div>
 
 <style>
-  .agc-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 101px 20px 28px; /* top = 28 + 73 to offset BEST SELLERS section's internal top padding */
-    background: #fff;
+  /* ── Ticker banner ───────────────────────────────────────── */
+  .agc-ticker-wrap {
     width: 100%;
-    box-sizing: border-box;
-    text-align: center;
+    overflow: hidden;
+    background: #0d0d0d;
+    border-top: 1px solid rgba(201,169,110,0.2);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+    cursor: pointer;
+    user-select: none;
   }
 
-  /* override Shopify theme container constraints */
-  .shopify-section:has(.agc-wrap),
-  .shopify-section .agc-wrap {
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  /* Kill Shopify section wrapper spacing */
+  .shopify-section:has(.agc-ticker-wrap) {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  .agc-btn {
-    position: relative;
+  .agc-ticker-track {
+    display: flex;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .agc-ticker-track:hover .agc-ticker-inner {
+    animation-play-state: paused;
+  }
+
+  .agc-ticker-inner {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    white-space: nowrap;
+    padding: 13px 0;
+    animation: agcTicker 28s linear infinite;
+  }
+  .agc-ticker-inner--clone {
+    animation-delay: -14s;
+  }
+
+  @keyframes agcTicker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .agc-ticker-item {
     display: inline-flex;
     align-items: center;
-    background: #0a0a0a;
-    border: 1px solid rgba(201,169,110,0.7);
-    border-radius: 60px;
-    padding: 14px 32px 14px 22px;
-    cursor: pointer;
-    gap: 14px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    box-shadow: 0 4px 28px rgba(201,169,110,0.18);
-  }
-  .agc-btn:hover {
-    transform: translateY(-3px) scale(1.04);
-    border-color: #c9a96e;
-    box-shadow: 0 10px 44px rgba(201,169,110,0.38);
-  }
-  .agc-btn:active { transform: scale(0.98); }
-
-  /* pulsing rings */
-  .agc-ring {
-    position: absolute;
-    inset: -1px;
-    border-radius: 60px;
-    border: 1px solid rgba(201,169,110,0.45);
-    animation: agcPulse 2.6s ease-out infinite;
-    pointer-events: none;
-  }
-  .agc-ring-2 { animation-delay: 1.3s; }
-  @keyframes agcPulse {
-    0%   { transform: scale(1);    opacity: 0.8; }
-    100% { transform: scale(1.65); opacity: 0; }
+    gap: 8px;
   }
 
-  /* shimmer on hover */
-  .agc-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 60px;
-    background: linear-gradient(105deg, transparent 40%, rgba(201,169,110,0.13) 50%, transparent 60%);
-    background-size: 200% 100%;
-    background-position: 200% 0;
-    transition: background-position 0.5s ease;
-    pointer-events: none;
-  }
-  .agc-btn:hover::after { background-position: -100% 0; }
-
-  .agc-icon {
-    width: 20px;
-    height: 20px;
+  .agc-ticker-icon {
+    width: 11px;
+    height: 11px;
     color: #c9a96e;
     flex-shrink: 0;
   }
 
-  .agc-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-  .agc-label {
-    font-size: 12px;
+  .agc-ticker-label {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #c9a96e;
-    font-weight: 600;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-  .agc-sub {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(201,169,110,0.6);
-    line-height: 1.2;
-    white-space: nowrap;
   }
 
-  @media (max-width: 600px) {
-    .agc-wrap { padding: 20px 16px; }
-    .agc-label { font-size: 11px; }
-    .agc-sub { font-size: 9px; }
+  .agc-ticker-sep {
+    color: rgba(201,169,110,0.35);
+    font-size: 11px;
+  }
+
+  .agc-ticker-sub {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(201,169,110,0.55);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .agc-ticker-inner { animation: none; }
+    .agc-ticker-inner--clone { display: none; }
   }
 </style>
 
