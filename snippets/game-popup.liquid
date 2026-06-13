@@ -1,27 +1,33 @@
 {% comment %} The Edit — memory game popup {% endcomment %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Offer",
+  "name": "Win 30% Off — Play The Edit",
+  "description": "Complete The Edit memory challenge by Antara International. Match all pairs across 2 levels to earn 30% off your next order as The Collector tier reward.",
+  "url": "{{ shop.url }}/pages/the-edit",
+  "seller": {
+    "@type": "Organization",
+    "name": "{{ shop.name }}",
+    "url": "{{ shop.url }}"
+  },
+  "itemOffered": {
+    "@type": "Service",
+    "name": "The Edit Memory Challenge",
+    "description": "An exclusive interactive memory card game by Antara International featuring 2 levels and 44 pairs each.",
+    "url": "{{ shop.url }}/pages/the-edit"
+  }
+}
+</script>
+
 <div id="antara-game-popup" class="agp-overlay" style="display:none" aria-modal="true" role="dialog">
   <div class="agp-backdrop"></div>
   <div class="agp-container">
     <button class="agp-close" aria-label="Close game" onclick="antaraClosePopup()">&times;</button>
 
-    <!-- Intro splash screen -->
-    <div id="agp-intro" class="agp-intro">
-      <p class="agp-eyebrow">ANTARA INTERNATIONAL</p>
-      <h2 class="agp-title">THE EDIT</h2>
-      <p class="agp-tagline">A MEMORY CHALLENGE FOR THOSE WHO MOVE WITH INTENTION.</p>
-      <hr class="agp-rule">
-      <p class="agp-desc">Match all pairs to complete the challenge.<br>Beat it in time — win 30% off your next order.</p>
-      <hr class="agp-rule">
-      <div class="agp-tier">
-        <p class="agp-tier-name">THE COLLECTOR</p>
-        <p class="agp-tier-discount">30% OFF</p>
-        <p class="agp-tier-meta">2 levels &middot; 44 pairs each &middot; +10s per match</p>
-      </div>
-      <div class="agp-actions">
-        <button class="agp-begin-btn" onclick="antaraBeginGame()">BEGIN</button>
-        <button class="agp-nothanks-btn" onclick="antaraClosePopup()">No thanks</button>
-      </div>
-    </div>
+    <!-- Intro splash screen (hidden — game handles its own intro) -->
+    <div id="agp-intro" class="agp-intro" style="display:none"></div>
 
     <!-- Game iframe (hidden until BEGIN is clicked) -->
     <iframe
@@ -227,6 +233,14 @@
       var el = document.getElementById('antara-game-popup');
       if (el) el.style.display = 'block';
       document.body.style.overflow = 'hidden';
+      // Load game iframe directly — no separate intro screen
+      var iframe = document.getElementById('agp-iframe');
+      if (iframe) {
+        if (!iframe.src || iframe.src === window.location.href) {
+          iframe.src = 'https://antara-game.vercel.app';
+        }
+        iframe.style.display = 'block';
+      }
     }
 
     window.antaraOpenPopup = function() {
@@ -234,13 +248,7 @@
     };
 
     window.antaraBeginGame = function() {
-      var intro = document.getElementById('agp-intro');
-      var iframe = document.getElementById('agp-iframe');
-      if (intro) intro.style.display = 'none';
-      if (iframe) {
-        iframe.src = 'https://antara-game.vercel.app';
-        iframe.style.display = 'block';
-      }
+      showPopup();
     };
 
     window.antaraClosePopup = function() {
@@ -251,10 +259,7 @@
         setTimeout(function() {
           el.style.display = 'none';
           el.style.opacity = '';
-          // reset to intro screen for next open
-          var intro = document.getElementById('agp-intro');
           var iframe = document.getElementById('agp-iframe');
-          if (intro) intro.style.display = '';
           if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
         }, 300);
       }
