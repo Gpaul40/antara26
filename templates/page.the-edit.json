@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "game-page": {
+      "type": "game-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "game-page"
+  ]
+}

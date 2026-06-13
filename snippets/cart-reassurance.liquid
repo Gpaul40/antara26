@@ -1,0 +1,125 @@
+{%- doc -%}
+  Cart reassurance strip — renders above the checkout CTA in the cart drawer/page.
+  Shows: free-shipping threshold progress, returns strip, and payment badges.
+{%- enddoc -%}
+
+{%- liquid
+  assign free_shipping_threshold = 150
+  assign cart_total_dollars = cart.total_price | divided_by: 100.0
+  assign remaining = free_shipping_threshold | minus: cart_total_dollars
+  assign progress_pct = cart_total_dollars | divided_by: free_shipping_threshold | times: 100 | at_most: 100
+  assign qualifies = false
+  if cart_total_dollars >= free_shipping_threshold
+    assign qualifies = true
+  endif
+-%}
+
+<div class="cart-reassurance">
+  {%- unless cart.empty? -%}
+    <div class="cart-reassurance__shipping">
+      {%- if qualifies -%}
+        <p class="cart-reassurance__shipping-msg cart-reassurance__shipping-msg--achieved">
+          <span class="cart-reassurance__tick" aria-hidden="true">✓</span>
+          You've unlocked <strong>free shipping</strong>!
+        </p>
+      {%- else -%}
+        <p class="cart-reassurance__shipping-msg">
+          Add <strong>{{ remaining | money }}</strong> more for free shipping
+        </p>
+      {%- endif -%}
+      <div class="cart-reassurance__progress-track" role="progressbar" aria-valuenow="{{ progress_pct | round }}" aria-valuemin="0" aria-valuemax="100" aria-label="Free shipping progress">
+        <div class="cart-reassurance__progress-fill" style="width: {{ progress_pct }}%;"></div>
+      </div>
+    </div>
+  {%- endunless -%}
+
+  <div class="cart-reassurance__trust">
+    <span class="cart-reassurance__trust-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.39"/></svg>
+      30-day returns
+    </span>
+    <span class="cart-reassurance__trust-sep" aria-hidden="true">·</span>
+    <span class="cart-reassurance__trust-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Secure checkout
+    </span>
+    <span class="cart-reassurance__trust-sep" aria-hidden="true">·</span>
+    <span class="cart-reassurance__trust-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      All major cards accepted
+    </span>
+  </div>
+</div>
+
+{% stylesheet %}
+  .cart-reassurance {
+    padding-block: var(--padding-md) var(--padding-sm);
+    border-block-start: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm, 0.75rem);
+  }
+
+  .cart-reassurance__shipping-msg {
+    font-size: var(--cart-font-size--xs, var(--font-size--xs));
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    margin-block-end: 0.5rem;
+    text-align: center;
+  }
+
+  .cart-reassurance__shipping-msg strong {
+    color: var(--color-foreground);
+    font-weight: 500;
+  }
+
+  .cart-reassurance__shipping-msg--achieved {
+    color: var(--color-foreground);
+    font-weight: 500;
+  }
+
+  .cart-reassurance__tick {
+    color: var(--color-success, #2e7d32);
+    margin-inline-end: 0.2rem;
+  }
+
+  .cart-reassurance__progress-track {
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .cart-reassurance__progress-fill {
+    height: 100%;
+    background-color: var(--color-foreground);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .cart-reassurance__trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+  }
+
+  .cart-reassurance__trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--cart-font-size--2xs, var(--font-size--2xs));
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .cart-reassurance__trust-item svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .cart-reassurance__trust-sep {
+    font-size: var(--font-size--2xs);
+    color: rgb(var(--color-foreground-rgb) / 0.3);
+  }
+{% endstylesheet %}

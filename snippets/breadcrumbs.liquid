@@ -1,0 +1,122 @@
+{%- doc -%}
+  Renders breadcrumb navigation and a "Back to [collection]" link for PDPs.
+  Shows: Home / Collection / Product
+{%- enddoc -%}
+
+{%- liquid
+  assign bc_collection_url   = nil
+  assign bc_collection_title = nil
+
+  if collection
+    assign bc_collection_url   = collection.url
+    assign bc_collection_title = collection.title
+  elsif product and product.collections.size > 0
+    assign bc_collection_url   = product.collections.first.url
+    assign bc_collection_title = product.collections.first.title
+  endif
+-%}
+
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+  <ol class="breadcrumbs__list list-unstyled">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Home</a>
+      <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+    </li>
+    {%- if bc_collection_title and bc_collection_url -%}
+      <li class="breadcrumbs__item">
+        <a href="{{ bc_collection_url }}" class="breadcrumbs__link">{{ bc_collection_title }}</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+      </li>
+    {%- endif -%}
+    {%- if request.page_type == 'product' -%}
+      <li class="breadcrumbs__item" aria-current="page">
+        <span class="breadcrumbs__current">{{ product.title }}</span>
+      </li>
+    {%- elsif request.page_type == 'collection' -%}
+      <li class="breadcrumbs__item" aria-current="page">
+        <span class="breadcrumbs__current">{{ collection.title }}</span>
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>
+
+{%- if bc_collection_url and request.page_type == 'product' -%}
+  <a href="{{ bc_collection_url }}" class="back-to-collection">
+    <span class="back-to-collection__arrow" aria-hidden="true">&#8592;</span>
+    Back to {{ bc_collection_title }}
+  </a>
+{%- endif -%}
+
+{% stylesheet %}
+  .breadcrumbs {
+    padding-block: var(--padding-sm) var(--padding-2xs);
+  }
+
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem;
+    margin: 0;
+    padding-inline: 0;
+  }
+
+  .breadcrumbs__item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .breadcrumbs__link {
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .breadcrumbs__link:hover {
+    color: var(--color-foreground);
+    text-decoration: underline;
+  }
+
+  .breadcrumbs__sep {
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    opacity: 0.5;
+  }
+
+  .breadcrumbs__current {
+    font-size: var(--font-size--xs);
+    color: var(--color-foreground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 22ch;
+    display: inline-block;
+  }
+
+  .back-to-collection {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-decoration: none;
+    padding-block: var(--padding-2xs) var(--padding-sm);
+    transition: color 0.2s, gap 0.2s;
+  }
+
+  .back-to-collection:hover {
+    color: var(--color-foreground);
+    gap: 0.6rem;
+  }
+
+  .back-to-collection__arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+
+  .back-to-collection:hover .back-to-collection__arrow {
+    transform: translateX(-3px);
+  }
+{% endstylesheet %}

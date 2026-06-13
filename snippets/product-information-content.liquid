@@ -105,6 +105,9 @@
         {{ media }}
       {% elsif block == 'product-details' %}
         {{ product_details }}
+        {% if request.page_type == 'product' %}
+          {% render 'pdp-trust-module' %}
+        {% endif %}
       {% endif %}
     {% endfor %}
   </div>
